@@ -101,3 +101,11 @@ Calendar notes:
 - Year-1 net revenue: typical case $12k–60k (100–500 reviews); hit case $120k–360k (1k–3k reviews), using
   reviews × 30 × $7.99 × 0.5 [`memories/marketing/boxleiter-multiplier-about-30x-for-recent-games`].
 - Developer Homepage followers gained (factory KPI).
+
+## Decisions (user, 2026-11-26)
+- Concept: **Knolling Co.**
+- Steamworks partner account: **not yet created** → user to start onboarding now (15–30 days).
+  Launch date 2027-02-11 is **at risk**; fallback Tue 2027-02-16 (last date eligible for Spring Sale),
+  else after the Spring Sale.
+- Art: human-made capsule + logo; AI-assisted item sprites; complete Steam AI disclosure.
+- Next Fest Feb 2027: not for 002; reserved for game 003.

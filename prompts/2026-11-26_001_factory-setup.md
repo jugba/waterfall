@@ -78,3 +78,11 @@ Outcome: Committed and pushed each time (WIP where work was unreviewed).
 > Cozy organizing / job sim (Recommended)
 
 Outcome: Project 002 created from template; ACTIVE switched; concept subagent started.
+
+## Dialog answers (project 002 decisions)
+> Concept: Knolling Co. (Recommended)
+> Steamworks partner account: Not yet
+> Art: Human capsule, AI-assisted items (Recommended)
+> Next Fest Feb 2027: Save it for game 003 (Recommended)
+
+Outcome: Decisions recorded in projects/002 BRIEF.md; greybox prototype subagent started.
