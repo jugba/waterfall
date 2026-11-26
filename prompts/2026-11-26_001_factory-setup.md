@@ -68,3 +68,13 @@ Outcome: Committed in-progress subagent output as WIP.
 > Godot 4.7 + GDScript (Recommended)
 
 Outcome: Engine decided; game template subagent started. Recorded in memories/tech/godot-gdscript-is-default-engine.
+
+## Prompts 10–13 (hooks)
+> (Stop hook) commit/push reminders ×4 while subagents were writing files.
+
+Outcome: Committed and pushed each time (WIP where work was unreviewed).
+
+## Dialog answer (first game direction)
+> Cozy organizing / job sim (Recommended)
+
+Outcome: Project 002 created from template; ACTIVE switched; concept subagent started.

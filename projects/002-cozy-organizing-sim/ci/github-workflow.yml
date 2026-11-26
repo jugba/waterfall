@@ -1,0 +1,103 @@
+# GitHub Actions: build + test on every push, upload to Steam (beta branch) on a version tag.
+#
+# GitHub only runs workflows from the repository root, so copy this file per game:
+#   sed -e 's#projects/NNN-name#projects/002-my-game#g' -e 's#NNN-name#002-my-game#g' -e 's#NNN-v#002-v#g' \
+#     projects/_template/ci/github-workflow.yml > .github/workflows/002-my-game.yml
+# Release: git tag 002-v0.3.0 && git push origin 002-v0.3.0
+#
+# Required repository settings (Settings > Secrets and variables > Actions); no values here:
+#   secrets.STEAM_USERNAME     dedicated Steam build account (only the rights it needs)
+#   secrets.STEAM_CONFIG_VDF   base64 of config/config.vdf after one local `steamcmd +login`
+#                              (refresh when Steam Guard expires it; see memories/tech/steam-upload-ci-steam-deploy-action)
+#   vars.STEAM_APP_ID          the game's App ID
+#   vars.STEAM_DEPOT_LINUX     Linux depot ID (Steamworks > SteamPipe > Depots, OS = Linux)
+#   vars.STEAM_DEPOT_WINDOWS   Windows depot ID (OS = Windows)
+# And an Environment named "steam" with a required reviewer, so every upload needs a human click.
+# The upload goes to the "beta" branch; a human sets the build live in Steamworks.
+
+name: NNN-name build
+
+on:
+  push:
+    branches: [main]
+    paths: ["projects/NNN-name/**", "tools/godot/**", ".github/workflows/NNN-name.yml"]
+    tags: ["NNN-v*"]
+  pull_request:
+    paths: ["projects/NNN-name/**", "tools/godot/**"]
+  workflow_dispatch:
+
+env:
+  PROJECT_DIR: projects/NNN-name
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # LFS with a cache, so CI clones don't burn LFS bandwidth (billed per GiB).
+      - name: List LFS objects
+        run: git lfs ls-files --long | cut -d ' ' -f1 | sort > .lfs-assets-id
+      - uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-${{ hashFiles('.lfs-assets-id') }}
+      - run: git lfs pull
+
+      - name: Read pinned versions
+        id: env
+        run: |
+          source "$PROJECT_DIR/build.env"
+          echo "godot=$GODOT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "game=$GAME_NAME" >> "$GITHUB_OUTPUT"
+      - name: Cache Godot + export templates
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/godot/${{ steps.env.outputs.godot }}
+            ~/.local/share/godot/export_templates/${{ steps.env.outputs.godot }}.stable
+          key: godot-${{ steps.env.outputs.godot }}-linux-windows
+
+      - name: Import, test, export
+        run: tools/godot/build.sh "$PROJECT_DIR"
+
+      - name: Test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ${{ env.PROJECT_DIR }}/build/test-results.xml
+          if-no-files-found: ignore
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: builds
+          path: |
+            ${{ env.PROJECT_DIR }}/build/linux
+            ${{ env.PROJECT_DIR }}/build/windows
+          retention-days: 14
+
+  deploy:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-24.04
+    environment: steam   # add a required reviewer to this environment = manual approval gate
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: builds
+          path: build
+      # Artifacts drop file permissions; the Linux binary must be executable on Steam/Deck.
+      - run: chmod +x build/linux/*.x86_64 && ls -lR build
+      - uses: game-ci/steam-deploy@v3
+        with:
+          username: ${{ secrets.STEAM_USERNAME }}
+          configVdf: ${{ secrets.STEAM_CONFIG_VDF }}
+          appId: ${{ vars.STEAM_APP_ID }}
+          buildDescription: ${{ github.ref_name }}
+          rootPath: build
+          depot1Path: linux
+          depot1Id: ${{ vars.STEAM_DEPOT_LINUX }}
+          depot2Path: windows
+          depot2Id: ${{ vars.STEAM_DEPOT_WINDOWS }}
+          releaseBranch: beta
