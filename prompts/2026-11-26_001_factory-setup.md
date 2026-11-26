@@ -86,3 +86,7 @@ Outcome: Project 002 created from template; ACTIVE switched; concept subagent st
 > Next Fest Feb 2027: Save it for game 003 (Recommended)
 
 Outcome: Decisions recorded in projects/002 BRIEF.md; greybox prototype subagent started.
+
+## (no new user prompt) Greybox prototype delivered
+Outcome: Committed prototype; enabled git-lfs locally; allowed lfs.github.com in the
+"waterfall" environment so LFS assets push; added greybox mp4.

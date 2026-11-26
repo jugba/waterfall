@@ -11,3 +11,7 @@ also could not reach `steamdb.info`, `gamefromscratch.com`, `godotsteam.com`. Re
 release downloads, npm, crates index, nuget API. So: build/test in the container, deploy to Steam
 from GitHub Actions with `game-ci/steam-deploy` (https://github.com/game-ci/steam-deploy), or ask
 the user to allowlist hosts. Report blocks; don't work around them.
+
+- Revised 2026-11-26: Git LFS pushes need `lfs.github.com` allowed in the environment's
+  network settings (added to the "waterfall" environment). Without it, `git push` fails at
+  the LFS verify step even though the commit itself is fine.
