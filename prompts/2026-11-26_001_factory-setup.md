@@ -41,3 +41,14 @@ numeric IDs dropped; INDEX, README, CLAUDE.md rule 3 and template updated.
 > (Stop hook) There are untracked files in the repository. Please commit and push these changes to the remote branch.
 
 Outcome: Committed candidates.csv (30,708 games) and the partial raw enrichment cache.
+
+## Prompt 7
+> What else's can you be working on? Are you able to use subagents?
+
+Outcome: Confirmed subagents are available; offered parallel workstreams via dialog.
+
+## Dialog answer (parallel workstreams)
+> Steam launch rules, Engine & tech stack, Marketing benchmarks, Game repo template
+
+Outcome: Three research subagents started (launch rules, engine, marketing); the game repo
+template waits for the engine recommendation.
