@@ -56,6 +56,7 @@ better at it each cycle by compounding what we learn.
 | `projects/_template/` | Copy this to start a new project. |
 | `projects/NNN-name/` | One folder per project: brief, iterations, research, assets, postmortem. |
 | `tools/` | Shared scripts usable across projects (scrapers, build/upload helpers). |
+| `projects/_research/` | Cross-project studies (engine evaluation, …) that aren't a single project. |
 
 ## Starting a new project
 

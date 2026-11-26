@@ -43,7 +43,7 @@ Before any decision costs real money, re-check the key benchmarks against the pr
 
 ---
 
-## 1. Per-game timeline (fits a 4–6 week cycle; L = launch day)
+## 1. Per-game timeline (about 8 weeks per game from concept lock to launch, overlapping so one game ships every 4–6 weeks; L = launch day)
 
 Hard Steam constraints:
 - The Coming Soon page must be public for **≥2 weeks** before release ([Steamworks: Coming Soon, acc. 2026-11-26](https://partner.steamgames.com/doc/store/coming_soon)).
@@ -55,21 +55,21 @@ Hard Steam constraints:
 - Players can refund any game with under 2 h played within 14 days of purchase (see `memories/marketing/steam-refund-two-hours-short-games`).
 - Related memories: `marketing/coming-soon-page-live-five-weeks-before-launch` and `marketing/steam-release-blocks-discounts-30-days`.
 
-So for our cadence, **game N's store page goes live while game N is still in development**, and game N's launch marketing overlaps with game N+1's prototype.
+So for our cadence, **game N's store page goes live while game N is still in development**, and game N's launch marketing overlaps with game N+1's hook test and prototype. With one launch per month, at any moment about two games are in the pipeline: one in Coming Soon and one in hook test or prototype.
 
 | When | Game N task | Owner notes |
 |---|---|---|
-| **L−6w** (concept locked) | **Hook test.** Make 3 one-line pitches and 3 rough capsule thumbnails. Pick tags from 5–10 comparable successful games. Post one 10–15 s gameplay clip per pitch variant to TikTok, Shorts and Reels, and pick the hook whose clip gets the best views and retention. Draft the short description. | Cheapest validation we have. Kill or reshape the concept if every variant flops. |
-| **L−6w** | Create the store page; the app fee should already have been paid at least 30 days earlier. **Link the app to our Creator Homepage before the page goes live** ([Steamworks: Creator Homepage](https://partner.steamgames.com/doc/store/creator_homepage)). | Followers of the homepage get an email when the game releases (same source). |
-| **L−7w → L−5w** | Commission or finish the **final capsule**. It is the top-priority asset (see §3). Prepare 5+ gameplay screenshots, with the genre shown in the first 3. Submit the store page for review at L−7w (allow 7 business days). | Budget goes to the capsule before the trailer ([Zukowski, howtomarketagame 2022-03-08](https://howtomarketagame.com/2022/03/08/what-should-you-spend-money-on-if-you-have-a-small-marketing-budget/)). |
+| **L−8w** (concept locked) | **Hook test.** Make 3 one-line pitches and 3 rough capsule thumbnails. Pick tags from 5–10 comparable successful games. Post one 10–15 s gameplay clip per pitch variant to TikTok, Shorts and Reels, and pick the hook whose clip gets the best views and retention. Draft the short description. | Cheapest validation we have. Kill or reshape the concept if every variant flops. |
+| **L−8w** | Create the store page (the app fee should already have been paid at least 30 days earlier). **Link the app to our Creator Homepage before the page goes live** ([Steamworks: Creator Homepage](https://partner.steamgames.com/doc/store/creator_homepage)). | Followers of the homepage get an email when the game releases (same source). |
+| **L−8w → L−7w** | Commission or finish the **final capsule**. It is the top-priority asset (see §3). Prepare 5+ gameplay screenshots, with the genre shown in the first 3. **Submit the store page for review by L−7w** (allow 7 business days). | Budget goes to the capsule before the trailer ([Zukowski, howtomarketagame 2022-03-08](https://howtomarketagame.com/2022/03/08/what-should-you-spend-money-on-if-you-have-a-small-marketing-budget/)). |
 | **L−5w** | **Store page live (Coming Soon).** Announce it to our existing audience: a homepage post, Steam events on earlier games' pages, the mailing list and Discord. Add the new game to the "More from this developer" placement and to franchise/bundle plans. | Must happen by L−2w at the latest (hard rule). Aim for L−5w so the page builds wishlist velocity. |
-| **L−4w** | **Submit the launch build for Steam review** (up to 12 business days). | Build must have recent playtime launched through Steam. |
 | **L−5w → L** | **Short-form cadence: 3–5 clips per week** on TikTok, Shorts and Reels, re-cut from development footage. Make **1–2 Reddit posts** in genre-specific subreddits, following the 1-in-10 self-promo norms. Collect creator contacts (see §4). | Shorts keep resurfacing for longer than TikToks ([bugnet.io, n.d.](https://bugnet.io/blog/youtube-shorts-for-indie-game-marketing); **unverified**). |
+| **L−4w** | **Submit the launch build for Steam review** (up to 12 business days). | Build must have recent playtime launched through Steam. |
 | **L−3w** | Trailer v1: 30–60 s, gameplay from second one (see §3). Optional free demo if the game benefits from being tried (see §4, Demos). Register for any **themed Steam fest** that falls in the launch window. | |
 | **L−2w** | **Creator outreach wave 1.** Send keys to 30–100 matched small and mid-sized creators. Use Keymailer, Woovit or Lurkit to filter, plus direct emails to creators who have played comparable games. Set embargo = launch day. Set the launch discount (10–15%). Upload the press kit. | Verify every key request against the creator's real channel contact ([gamedeveloper.com, n.d.](https://www.gamedeveloper.com/game-platforms/avoiding-ineffective-or-scam-discovery-interactions-with-influencers)). |
 | **L−1w** | Build approved; day-one patch ready. Schedule launch posts. Prepare the Steam "Release" event. Plan a cross-promotion: launch-week discount on the previous titles plus a refreshed franchise bundle. | |
 | **L (launch)** | Release in the morning, US time (convention, **unverified**). Post a Steam event, a homepage post and socials. Reply to every review in week 1. Hotfix within 48 h if needed. | Week-1 review score strongly predicts over- or under-performance. Over-performers averaged 91% positive, under-performers 67% ([GameDiscoverCo via Automaton, 2025-10-18](https://automaton-media.com/en/news/steam-wishlist-to-sales-study-shows-how-genre-release-timing-and-reviews-affect-success-nsfw-games-show-unusually-high-conversion-rate/)). |
-| **L+1w** | Creator outreach wave 2: launch-day coverage gets clipped and shared. Patch 1. Record week-1 metrics (§6). | |
+| **L+1w** | Creator outreach wave 2: launch-day coverage gets clipped and shared. Patch 1. Record week-1 metrics (§7). | |
 | **L+2–4w** | Quality-of-life patch with an update event. Join the first eligible seasonal sale after the 30-day release cooldown. Add the game to the franchise bundle. Write the postmortem metrics into `projects/<id>/POSTMORTEM.md`. | By now game N+1 should be on its own L−4w step. |
 | **Ongoing** | Every new release creates a "sale moment" for the back catalogue: discount older titles in launch week when cooldowns allow, and refresh the bundle. | See §5. |
 
@@ -78,7 +78,7 @@ So for our cadence, **game N's store page goes live while game N is still in dev
 - Each game can appear **only once**, must be unreleased, and must have a public store page and a playable demo by the start of the fest ([Steamworks: Next Fest, acc. 2026-11-26](https://partner.steamgames.com/doc/marketing/upcoming_events/nextfest)).
 - The demo should be submitted about 3 weeks before the fest ([Next Fest tips](https://partner.steamgames.com/doc/marketing/upcoming_events/nextfest/tips)).
 
-Policy: for the game whose launch lands **1–4 weeks after a Next Fest**, plan the schedule so its demo is in the fest. That is up to three games per year. Pick the titles with the strongest hook-test results, because pre-fest wishlists are the best predictor of fest results (see §2.3).
+Policy: for the game whose launch lands **1–4 weeks after a Next Fest**, plan the schedule so its demo is in the fest. That is up to three games per year. Pick the titles with the strongest hook-test results, because pre-fest wishlists are the best predictor of fest results (see §2.3). Fest dates for 2027 are in `memories/marketing/next-fest-once-per-game-plan-which-game`.
 
 ---
 
