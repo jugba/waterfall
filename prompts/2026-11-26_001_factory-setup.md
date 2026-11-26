@@ -25,3 +25,8 @@ Outcome: Added rule 10 to CLAUDE.md and memory M-001 (always ask via input dialo
 > Sources: Free public only (Recommended)
 
 Outcome: BRIEF.md updated; iteration 002 (data collection) started.
+
+## Prompt 4
+> (Stop hook) There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+Outcome: The change was the live collector log; untracked it and git-ignored research/*.log.
