@@ -10,6 +10,14 @@ Read this at the start of every session. One line per memory: `path — learning
 - `process/steam-direct-fee-pay-two-games-ahead` — pay each $100 Steam Direct fee ≥30 days ahead; pay for game N+2 when N launches (medium)
 
 ## market
+- `market/small-scope-steam-hit-base-rate-under-1-percent` — only 0.81% of releases become small-scope hits (≥1k reviews, ≥80%); median hit ≈$340k net (est.) (high)
+- `market/small-scope-winning-tags-organizing-jobsim-incremental-coop` — Organizing/Mining/Investigation/Job Sim/Co-op/Relaxing/Incremental over-index; 2D platformer, arcade, tactics saturated (medium)
+- `market/small-scope-price-7-to-15-dollars-never-under-5` — price $7.99–14.99; <$5 is 42% of releases with 1/6 the hit rate (medium)
+- `market/small-scope-hits-are-small-builds-single-player-3-to-9-hours` — hits are ≤2 GB, single-player, 3–9 h; co-op = reach + variance (medium)
+- `market/release-tuesday-to-thursday-not-weekends` — Thu/Tue launch; weekend releases almost never hit (medium)
+- `market/early-access-graduates-inflate-new-release-lists` — 22% of ≥1k-review "new releases" are EA grads/re-releases; filter by first-review date (high)
+- `market/steam-search-review-count-is-english-only` — search-row review counts are language-filtered; all-language totals ≈1.39× (high)
+- `market/steamspy-has-no-data-for-most-new-games` — SteamSpy owners/tags empty for ~3/4 of new games; use Steam search tags + histogram (high)
 ## design
 ## tech
 - `tech/godot-gdscript-is-default-engine` — default engine is Godot 4 + GDScript; deviate only with a written reason (medium)

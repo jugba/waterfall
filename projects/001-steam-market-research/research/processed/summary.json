@@ -5,8 +5,55 @@
   "with_1000_reviews": 744,
   "successes": 530,
   "small_scope_successes": 332,
-  "core_target": 45,
+  "core_target": 250,
+  "directions": {
+    "Cozy organizing / job sim": {
+      "releases": 1611,
+      "core": 33,
+      "median_rev_net_est": 283507
+    },
+    "Incremental / gambling roguelite": {
+      "releases": 3331,
+      "core": 50,
+      "median_rev_net_est": 234235
+    },
+    "Online co-op comedy (friendslop)": {
+      "releases": 1063,
+      "core": 22,
+      "median_rev_net_est": 771355
+    },
+    "Detective / investigation puzzle": {
+      "releases": 1110,
+      "core": 15,
+      "median_rev_net_est": 290281
+    },
+    "Shopkeeper / management sim": {
+      "releases": 1792,
+      "core": 28,
+      "median_rev_net_est": 322119
+    },
+    "Short indie horror": {
+      "releases": 3021,
+      "core": 36,
+      "median_rev_net_est": 361738
+    },
+    "Roguelike deckbuilder": {
+      "releases": 1379,
+      "core": 15,
+      "median_rev_net_est": 338211
+    },
+    "2D platformer": {
+      "releases": 2714,
+      "core": 8,
+      "median_rev_net_est": 307346
+    },
+    "Bullet heaven / survivors-like": {
+      "releases": 1523,
+      "core": 7,
+      "median_rev_net_est": 338811
+    }
+  },
   "base_success_per_1000": 17.26,
-  "base_core_per_1000": 1.465,
-  "core_median_rev_net_est": 307346
+  "base_core_per_1000": 8.141,
+  "core_median_rev_net_est": 337612.0
 }

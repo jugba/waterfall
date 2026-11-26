@@ -485,6 +485,36 @@ def main():
               [(f"p{int(p*100)}", money(qq(p))) for p in (0.1, 0.25, 0.5, 0.75, 0.9)] + [("Sum", money(sum(rv)))],
               ["Percentile", "Est. net revenue"])
 
+    # ---------------- candidate directions (tag-rule clusters; a game can be in several)
+    DIRS = {
+        "Cozy organizing / job sim": {"Organizing", "Job Simulator", "Cleaning", "Cozy"},
+        "Incremental / gambling roguelite": {"Incremental", "Idler", "Gambling"},
+        "Online co-op comedy (friendslop)": {"Online Co-Op"},
+        "Detective / investigation puzzle": {"Investigation", "Detective", "Mystery"},
+        "Shopkeeper / management sim": {"Shop Keeper", "Management", "Trading"},
+        "Short indie horror": {"Psychological Horror", "Survival Horror", "Horror"},
+        "Roguelike deckbuilder": {"Deckbuilding", "Roguelike Deckbuilder", "Card Battler"},
+        "2D platformer": {"2D Platformer", "Platformer"},
+        "Bullet heaven / survivors-like": {"Bullet Heaven", "Bullet Hell"},
+    }
+    name_to_id = {v: k for k, v in tagname.items()}
+    drows = []
+    for d, tset in DIRS.items():
+        ids_ = {name_to_id[t] for t in tset if t in name_to_id}
+        cs = [c for c in cands if ids_ & set(c["tags"])]
+        paid = [c for c in cs if (c["list_price"] or 0) > 0]
+        cg = [g for g in core if set(g["tags"]) & tset]
+        rv_ = sorted(g["rev_net_est"] for g in cg)
+        qd = lambda p: rv_[min(len(rv_) - 1, int(p * len(rv_)))] if rv_ else None
+        drows.append((d, ", ".join(sorted(tset)), len(cs), len(paid), sum(c["rc"] >= 100 for c in cs), len(cg),
+                      round(1000 * len(cg) / len(cs), 1) if cs else 0, round(len(cg) / len(cs) / base_rate_c, 2) if cs else 0,
+                      med([g["price"] for g in cg], 2), money(qd(0.25)), money(qd(0.5)), money(qd(0.75)),
+                      sum(g["coop"] == "1" for g in cg), "; ".join(g["name"] for g in sorted(cg, key=lambda g: -g["rc"])[:6])))
+        summary.setdefault("directions", {})[d] = {"releases": len(cs), "core": len(cg), "median_rev_net_est": qd(0.5)}
+    table("Candidate directions — tag-rule clusters (any listed tag)", drows,
+          ["Direction", "Tags (any)", "Releases", "Paid releases", "≥100 rev", "Core hits", "Core /1000", "Lift",
+           "Median price (core)", "p25 est. net", "Median est. net", "p75 est. net", "Core w/ co-op", "Biggest core hits"])
+
     # ---------------- lists
     def glist(grp, n):
         return [(g["name"], g["release_date"], g["price_usd"], int(g["rc"]), int(g["total_reviews"]), g["review_pct"],

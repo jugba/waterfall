@@ -4,7 +4,7 @@
 - Type: research
 - Start: 2026-11-26
 - Window studied: games released on Steam 2025-11-26 → 2026-11-26
-- Status: in progress (data collection)
+- Status: report delivered 2026-11-26 (reports/market-report.md); awaiting direction choice
 
 ## Goal
 Build a dataset and report of successful Steam releases from the past 12 months, so we
