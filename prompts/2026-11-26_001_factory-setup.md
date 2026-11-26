@@ -18,3 +18,10 @@ Outcome: Push refused (403, no GitHub access yet). Asked user to connect GitHub.
 > GitHub connected now, please always used input dislodges when you need inputs from me. Thanks
 
 Outcome: Added rule 10 to CLAUDE.md and memory M-001 (always ask via input dialogs). Pushed branch.
+
+## Dialog answers (project 001 settings)
+> Success bar: ≥1,000 reviews, ≥80%
+> Segment: Yes, both groups (Recommended)
+> Sources: Free public only (Recommended)
+
+Outcome: BRIEF.md updated; iteration 002 (data collection) started.

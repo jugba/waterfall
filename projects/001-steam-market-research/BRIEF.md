@@ -4,21 +4,21 @@
 - Type: research
 - Start: 2026-11-26
 - Window studied: games released on Steam 2025-11-26 → 2026-11-26
-- Status: planning (awaiting approval of plan)
+- Status: in progress (data collection)
 
 ## Goal
 Build a dataset and report of successful Steam releases from the past 12 months, so we
 can choose what kind of game the factory should build first — specifically, games a
 small team could plausibly ship in about one month.
 
-## Definition of "successful" (proposed — confirm or adjust)
-- At least **500 user reviews** (very roughly 15k–40k copies sold, using the usual
+## Definition of "successful" (confirmed by user 2026-11-26)
+- At least **1,000 user reviews** (very roughly 30k–60k+ copies sold, using the usual
   30–60 sales-per-review estimates), and
 - Review score of at least **80% positive**.
 - Two segments are reported separately:
   1. **All successes** — gives the overall market picture.
-  2. **Small-scope successes** — not from a major publisher, price ≤ $20, and modest
-     scope signals (small file size, short HowLongToBeat time where available). This is our real target.
+  2. **Small-scope successes** — not from a major publisher, price ≤ $20, and
+     install size ≤ 10 GB (or unknown). This is our real target.
 
 ## Data to collect per game
 App id, name, release date, developer, publisher, price, discounts at launch, genres,
@@ -29,9 +29,10 @@ Deck status, store description length, number of screenshots/trailers, DLC count
 ## Sources (public, rate-limited, used politely)
 - Steam Store search results (candidate list by release date) — `store.steampowered.com/search`
 - Steam Store `appdetails` API — metadata, price, genres
-- Steam `appreviews` API — review counts and score
+- Review score and count: taken from the Steam search result row (the `appreviews`
+  API redirected to the store homepage on 2026-11-26)
 - SteamSpy API — owner estimates, tags, playtime
-- Not used: SteamDB (its terms forbid scraping). Paid tools (Gamalytic, VG Insights) only if the user approves.
+- Not used: SteamDB (its terms forbid scraping). Paid tools: not used (user chose free public sources only).
 
 ## Outputs
 - `research/raw/` — untouched API responses (JSON), dated
