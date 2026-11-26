@@ -52,3 +52,9 @@ Outcome: Confirmed subagents are available; offered parallel workstreams via dia
 
 Outcome: Three research subagents started (launch rules, engine, marketing); the game repo
 template waits for the engine recommendation.
+
+## Prompt 8
+> Update your main CLAUDE.md, with runs to aggressively delegate to subagents so that the main session context last
+
+Outcome: Added CLAUDE.md rule 11 (delegate aggressively; main session orchestrates) and memory
+`process/delegate-to-subagents-keep-main-context`.

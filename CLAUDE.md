@@ -30,6 +30,20 @@ better at it each cycle by compounding what we learn.
    `playbooks/` so the next project starts from it instead of from scratch.
 10. **Ask through input dialogs.** Whenever input or a decision is needed from the user,
     ask with the interactive question dialog (AskUserQuestion), not in plain chat text.
+11. **Delegate aggressively to subagents.** The main session is the orchestrator: keep its
+    context for decisions, coordination and talking to the user, so it lasts the whole project.
+    - Send to a subagent: research and web reading, scraping/data runs, analysis of large
+      files or datasets, writing drafts (playbooks, reports, briefs), code exploration,
+      implementation of a well-scoped feature, reviews and test runs.
+    - Run independent tasks as parallel background subagents; don't wait on one to start another.
+    - Every delegation prompt is self-contained: goal, the files to read first (CLAUDE.md,
+      relevant memories), exact output paths, constraints, and the short report wanted back
+      (files written, key findings, blockers). Subagents don't commit; the main session reviews
+      their output, then commits.
+    - The main session should never read big raw files, long logs or full web pages itself;
+      it asks a subagent for the summary.
+    - Do it yourself only when it's quicker than writing the brief (a one-line edit, a quick
+      status check) or when it needs the user's decision.
 
 ## Repository map
 
