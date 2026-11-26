@@ -58,3 +58,13 @@ template waits for the engine recommendation.
 
 Outcome: Added CLAUDE.md rule 11 (delegate aggressively; main session orchestrates) and memory
 `process/delegate-to-subagents-keep-main-context`.
+
+## Prompt 9 (hook)
+> (Stop hook) There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
+
+Outcome: Committed in-progress subagent output as WIP.
+
+## Dialog answer (engine)
+> Godot 4.7 + GDScript (Recommended)
+
+Outcome: Engine decided; game template subagent started. Recorded in memories/tech/godot-gdscript-is-default-engine.

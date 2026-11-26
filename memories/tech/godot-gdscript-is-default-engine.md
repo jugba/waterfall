@@ -2,7 +2,7 @@
 
 - Area: tech
 - Date / source: 2026-11-26, projects/_research/engine-evaluation.md
-- Confidence: medium (desk research + one container test; not yet shipped a game)
+- Confidence: high (user confirmed 2026-11-26)
 - Apply when: starting any new game project or tempted to switch engine.
 
 Godot (MIT, no fees) is the only mainstream engine verified to import, test and export
