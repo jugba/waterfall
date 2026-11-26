@@ -27,6 +27,8 @@ better at it each cycle by compounding what we learn.
    with a cut list. If the schedule slips, cut features — never polish.
 9. **Promote patterns to playbooks.** When a process works twice, write it up in
    `playbooks/` so the next project starts from it instead of from scratch.
+10. **Ask through input dialogs.** Whenever input or a decision is needed from the user,
+    ask with the interactive question dialog (AskUserQuestion), not in plain chat text.
 
 ## Repository map
 

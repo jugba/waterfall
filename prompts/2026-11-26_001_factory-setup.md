@@ -8,3 +8,13 @@
 Outcome: Created folder structure, CLAUDE.md, prompts/, memories/, playbooks/,
 project template and projects/001-steam-market-research with its brief and plan
 (iteration 001). Scraping not started yet — awaiting approval of structure and plan.
+
+## Prompt 2
+> (Stop hook) There are 1 unpushed commit(s) on branch 'claude/game-factory-setup-y912qi'. Please push these changes to the remote repository.
+
+Outcome: Push refused (403, no GitHub access yet). Asked user to connect GitHub.
+
+## Prompt 3
+> GitHub connected now, please always used input dislodges when you need inputs from me. Thanks
+
+Outcome: Added rule 10 to CLAUDE.md and memory M-001 (always ask via input dialogs). Pushed branch.
