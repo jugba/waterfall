@@ -1,0 +1,12 @@
+{
+  "released_in_window": 30708,
+  "with_10_reviews": 11436,
+  "with_100_reviews": 3405,
+  "with_1000_reviews": 744,
+  "successes": 530,
+  "small_scope_successes": 332,
+  "core_target": 45,
+  "base_success_per_1000": 17.26,
+  "base_core_per_1000": 1.465,
+  "core_median_rev_net_est": 307346
+}
