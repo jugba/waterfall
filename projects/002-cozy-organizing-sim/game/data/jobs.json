@@ -1,0 +1,32 @@
+{
+	"_comment": "Handcrafted jobs in play order. items: catalogue ids (repeat an id for duplicates). container w/h in grid cells.",
+	"jobs": [
+		{
+			"id": "mia_pencil_case",
+			"client": "Mia, 9",
+			"title": "Mia's pencil case",
+			"note": "My pencil case is a DISASTER. Mum says if I can't find my pens I can't have new ones. Help!!",
+			"pay": 20,
+			"container": {"kind": "bag", "name": "Pencil case", "colour": "purple", "w": 8, "h": 3},
+			"items": ["pencil_yellow", "pencil_red", "pen_blue", "pen_black", "highlighter_yellow", "highlighter_pink", "eraser", "sharpener"]
+		},
+		{
+			"id": "dev_desk_drawer",
+			"client": "Dev, office manager",
+			"title": "The junk drawer",
+			"note": "Nobody has opened this drawer since 2019. The stapler is in there. Somewhere.",
+			"pay": 45,
+			"container": {"kind": "drawer", "name": "Desk drawer", "colour": "brown", "w": 10, "h": 6},
+			"items": ["stapler", "tape", "clips", "scissors", "glue", "sticky_notes", "pen_blue", "pen_black", "pencil_yellow", "marker_green", "highlighter_pink", "usb_stick", "charger", "cable"]
+		},
+		{
+			"id": "sam_backpack",
+			"client": "Sam, hiker",
+			"title": "Sam's day pack",
+			"note": "Back from three days on the ridge. Everything went in wet and in a hurry. Sorry.",
+			"pay": 80,
+			"container": {"kind": "bag", "name": "Backpack", "colour": "green", "w": 8, "h": 9},
+			"items": ["bottle", "map", "compass", "torch", "multitool", "carabiner", "first_aid", "snack_bar", "snack_bar", "apple", "trail_mix", "phone", "power_bank", "earbuds", "cable", "wallet", "keys", "lip_balm", "sunglasses", "mints", "pencil_yellow", "notebook"]
+		}
+	]
+}

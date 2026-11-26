@@ -22,6 +22,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `design/organizing-hits-count-the-mess-and-unlock-speed` — organizing hits pitch a counted mess ("3,072 books"), show the fill-up, and unlock speed-ups (medium)
 - `design/second-verb-needed-as-organizing-supply-explodes` — Organizing releases 7→192/quarter in 2026; add a craft/repair/deduce/pack verb or new view (medium)
 - `design/freeform-scoring-beats-single-solution-in-cozy-puzzles` — single-solution cozy puzzles score 72–79%, freeform ones 94–99% (low)
+- `design/knolling-scorer-groups-by-neighbours-at-smallest-gap` — tidiness grouping = aligned neighbours at the smallest gap, best of type/colour; centre-kNN fails tidy rows (medium)
 ## tech
 - `tech/godot-gdscript-is-default-engine` — default engine is Godot 4 + GDScript; deviate only with a written reason (medium)
 - `tech/godot-headless-build-recipe` — Godot imports/tests/exports fully headless here from GitHub release binaries (high)
@@ -31,6 +32,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `tech/git-lfs-for-binary-assets` — binaries in LFS, Godot text files in git, no .godot/ or builds (medium)
 - `tech/gut-fails-tests-on-unasserted-engine-errors` — GUT 9.7 fails tests on unexpected engine errors/push_error; assert intended ones, avoid error-logging APIs (high)
 - `tech/godot-generate-project-settings-headless` — generate InputMap/bus layout via headless script + ProjectSettings.save(); joypad device -1 (high)
+- `tech/godot-headless-capture-xvfb-write-movie` — screenshots/clips in the container: xvfb-run + opengl3 + --write-movie + an --autoplay user arg (high)
 ## marketing
 - `marketing/coming-soon-page-live-five-weeks-before-launch` — Coming Soon page live ~5 weeks before launch (official min 2 weeks) (medium)
 - `marketing/steam-release-blocks-discounts-30-days` — release blocks discounts 30 days except ≤40% launch discount; release ≥30 days before a seasonal sale (high)

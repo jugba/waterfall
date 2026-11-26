@@ -14,7 +14,7 @@ const BUSES: Array[String] = ["Master", "Music", "SFX"]
 ## Actions shown in the controls menu. Add game-specific actions here and in project.godot.
 const REBINDABLE_ACTIONS: Array[StringName] = [
 	&"move_up", &"move_down", &"move_left", &"move_right",
-	&"action_primary", &"action_secondary", &"pause",
+	&"action_primary", &"action_secondary", &"rotate_cw", &"rotate_ccw", &"finish_job", &"pause",
 ]
 const DEFAULT_VOLUMES := {"Master": 0.8, "Music": 0.7, "SFX": 0.8}
 

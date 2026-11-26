@@ -37,7 +37,13 @@ theme_override_constants/separation = 16
 [node name="GameTitle" type="Label" parent="Menu/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 72
-text = "Template Game"
+text = "Knolling Co."
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Menu/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.81, 0.29, 1)
+text = "greybox prototype - sort the mess, snap the photo"
 horizontal_alignment = 1
 
 [node name="Play" type="Button" parent="Menu/VBox"]
