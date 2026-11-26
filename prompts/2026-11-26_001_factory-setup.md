@@ -36,3 +36,8 @@ Outcome: The change was the live collector log; untracked it and git-ignored res
 
 Outcome: Memories restructured to one file per memory at `memories/<area>/<topic-slug>.md`;
 numeric IDs dropped; INDEX, README, CLAUDE.md rule 3 and template updated.
+
+## Prompt 6
+> (Stop hook) There are untracked files in the repository. Please commit and push these changes to the remote branch.
+
+Outcome: Committed candidates.csv (30,708 games) and the partial raw enrichment cache.
