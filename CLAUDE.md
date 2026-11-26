@@ -63,6 +63,7 @@ better at it each cycle by compounding what we learn.
 1. `cp -r projects/_template projects/NNN-short-name` (next free number).
 2. Fill in `BRIEF.md`; write `projects/ACTIVE`.
 3. Create `iterations/001.md` for the first session.
+4. For game projects, follow `projects/_template/README.md` (Godot setup, build/test/export, Steam, CI).
 
 ## Finishing a project
 

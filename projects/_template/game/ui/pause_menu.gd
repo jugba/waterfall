@@ -13,9 +13,12 @@ func _ready() -> void:
 	%Settings.pressed.connect(_open_settings)
 	%Quit.pressed.connect(_quit_to_title)
 	_settings_menu.closed.connect(_on_settings_closed)
-	SteamService.overlay_toggled.connect(func(active: bool) -> void:
-		if active:
-			pause())
+	SteamService.overlay_toggled.connect(_on_steam_overlay_toggled)
+
+
+func _on_steam_overlay_toggled(active: bool) -> void:
+	if active:
+		pause()
 
 
 func is_paused() -> bool:

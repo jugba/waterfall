@@ -18,6 +18,8 @@ Read this at the start of every session. One line per memory: `path — learning
 - `tech/steam-upload-ci-steam-deploy-action` — upload via game-ci/steam-deploy to a beta branch, human sets live (medium)
 - `tech/steam-ai-disclosure-player-facing-only` — disclose AI art/audio/text players consume; AI-written code exempt (medium)
 - `tech/git-lfs-for-binary-assets` — binaries in LFS, Godot text files in git, no .godot/ or builds (medium)
+- `tech/gut-fails-tests-on-unasserted-engine-errors` — GUT 9.7 fails tests on unexpected engine errors/push_error; assert intended ones, avoid error-logging APIs (high)
+- `tech/godot-generate-project-settings-headless` — generate InputMap/bus layout via headless script + ProjectSettings.save(); joypad device -1 (high)
 ## marketing
 - `marketing/coming-soon-page-live-five-weeks-before-launch` — Coming Soon page live ~5 weeks before launch (official min 2 weeks) (medium)
 - `marketing/steam-release-blocks-discounts-30-days` — release blocks discounts 30 days except ≤40% launch discount; release ≥30 days before a seasonal sale (high)

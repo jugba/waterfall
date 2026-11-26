@@ -51,7 +51,8 @@ func load_slot(slot: int) -> Dictionary:
 	var p := slot_path(slot)
 	if not FileAccess.file_exists(p):
 		return {}
-	var parsed = JSON.parse_string(FileAccess.get_file_as_string(p))
+	var json := JSON.new()  # JSON.parse_string() logs an engine error on bad input; this doesn't
+	var parsed = json.data if json.parse(FileAccess.get_file_as_string(p)) == OK else null
 	if not (parsed is Dictionary) or not (parsed.get("data") is Dictionary):
 		push_warning("SaveGame: slot %d is unreadable, ignoring it" % slot)
 		return {}
