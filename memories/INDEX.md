@@ -19,6 +19,9 @@ Read this at the start of every session. One line per memory: `path — learning
 - `market/steam-search-review-count-is-english-only` — search-row review counts are language-filtered; all-language totals ≈1.39× (high)
 - `market/steamspy-has-no-data-for-most-new-games` — SteamSpy owners/tags empty for ~3/4 of new games; use Steam search tags + histogram (high)
 ## design
+- `design/organizing-hits-count-the-mess-and-unlock-speed` — organizing hits pitch a counted mess ("3,072 books"), show the fill-up, and unlock speed-ups (medium)
+- `design/second-verb-needed-as-organizing-supply-explodes` — Organizing releases 7→192/quarter in 2026; add a craft/repair/deduce/pack verb or new view (medium)
+- `design/freeform-scoring-beats-single-solution-in-cozy-puzzles` — single-solution cozy puzzles score 72–79%, freeform ones 94–99% (low)
 ## tech
 - `tech/godot-gdscript-is-default-engine` — default engine is Godot 4 + GDScript; deviate only with a written reason (medium)
 - `tech/godot-headless-build-recipe` — Godot imports/tests/exports fully headless here from GitHub release binaries (high)
