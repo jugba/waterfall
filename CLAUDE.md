@@ -10,8 +10,9 @@ better at it each cycle by compounding what we learn.
    short follow-ups ("yes", "do it") — record them in the session's prompt file.
 2. **Read memory first.** At the start of every session, read `memories/INDEX.md` and the
    memory files relevant to the task. Don't repeat a mistake that is already written down.
-3. **Write memory last.** Before ending a session, add any new durable learning to the
-   right file in `memories/` (format in `memories/README.md`) and update `memories/INDEX.md`.
+3. **Write memory last.** Before ending a session, save each new durable learning as its
+   own file, `memories/<area>/<topic-slug>.md`, named so it can be found by filename alone
+   (format in `memories/README.md`), and add a line to `memories/INDEX.md`.
    A learning is durable if it would change how we act on a *future* project.
 4. **Document every iteration.** Each work session on a project produces a new file in
    `projects/<id>/iterations/` (format in `projects/_template/iterations/README.md`):
@@ -36,7 +37,7 @@ better at it each cycle by compounding what we learn.
 |---|---|
 | `CLAUDE.md` | These rules. Change only with the user's agreement. |
 | `prompts/` | Verbatim log of every prompt, one file per session. |
-| `memories/` | Durable, cross-project learnings (market, design, tech, marketing, process). |
+| `memories/` | Durable learnings, one file per topic: `memories/<area>/<topic-slug>.md`. |
 | `playbooks/` | Repeatable processes (monthly cycle, Steam launch checklist, …). |
 | `projects/_template/` | Copy this to start a new project. |
 | `projects/NNN-name/` | One folder per project: brief, iterations, research, assets, postmortem. |

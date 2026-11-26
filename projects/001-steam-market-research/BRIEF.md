@@ -40,7 +40,7 @@ Deck status, store description length, number of screenshots/trailers, DLC count
 - `research/scripts/` — reproducible scraper and analysis scripts
 - `reports/market-report.md` — findings: top genres/tags, price bands, release-month
   patterns, what small-scope hits have in common, and 3–5 candidate game directions
-- New entries in `memories/market.md`
+- New topic files in `memories/market/`
 
 ## Success metrics
 - Covers every Steam game in the window that meets the success bar (no manual cherry-picking).

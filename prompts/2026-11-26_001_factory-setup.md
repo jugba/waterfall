@@ -17,7 +17,7 @@ Outcome: Push refused (403, no GitHub access yet). Asked user to connect GitHub.
 ## Prompt 3
 > GitHub connected now, please always used input dislodges when you need inputs from me. Thanks
 
-Outcome: Added rule 10 to CLAUDE.md and memory M-001 (always ask via input dialogs). Pushed branch.
+Outcome: Added rule 10 to CLAUDE.md and memory `process/ask-user-via-input-dialogs`. Pushed branch.
 
 ## Dialog answers (project 001 settings)
 > Success bar: ≥1,000 reviews, ≥80%
@@ -30,3 +30,9 @@ Outcome: BRIEF.md updated; iteration 002 (data collection) started.
 > (Stop hook) There are uncommitted changes in the repository. Please commit and push these changes to the remote branch.
 
 Outcome: The change was the live collector log; untracked it and git-ignored research/*.log.
+
+## Prompt 5
+> Please give your memory contextual names so it's easy for you to find things
+
+Outcome: Memories restructured to one file per memory at `memories/<area>/<topic-slug>.md`;
+numeric IDs dropped; INDEX, README, CLAUDE.md rule 3 and template updated.
