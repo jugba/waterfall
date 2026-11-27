@@ -36,6 +36,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `design/colour-sort-palette-check-cvd-delta-e` — colour-scored palettes: check ΔE00 ≥10 under protan/deutan/tritan simulation, spread lightness, keep a non-colour route (high)
 - `design/user-loves-platformer-movement-music-levels-charm` — target: tight 1-hook single-player platformer; movement → rhythm levels → charm (high)
 - `design/rhythm-runner-lock-x-to-audio-clock-and-test-replays` — rhythm run: x = speed × audio time; one script makes music + beat map; test onsets ±10 ms and ideal/±50 ms replays (medium)
+- `design/grow-by-eating-pacing-relative-spawns-decaying-efficiency-bot-report` — eat-to-grow: spawn prey relative to your size, decay meal efficiency ∝ size^-0.9 or growth snowballs; tune with a bot pacing report, then make it tests (medium)
 
 ## tech
 - `tech/godot-gdscript-is-default-engine` — default engine is Godot 4 + GDScript; deviate only with a written reason (medium)
@@ -51,6 +52,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `tech/godot-2d-glow-additive-layers-behind-and-in-front` — fake glow with ADD-blend draw layers + radial gradient; big glow behind the subject or it washes out (high)
 - `tech/macos-gatekeeper-unnotarized-builds-need-open-anyway` — unsigned Mac builds need Open Anyway / xattr; notarize for release (high)
 - `tech/platformer-controller-as-pure-fixed-step-sim-for-tests` — node-free AABB controller: jump/coyote/buffer/wall-jump are unit tests, a 70 s level replay runs in ~50 ms (high)
+- `tech/godot-headless-script-hangs-on-parse-error-use-timeout` — a `-s` script with a broken dependency never quits; always `timeout` + log file; `:=` on untyped values is a 4.7 parse error (high)
 
 ## marketing
 - `marketing/coming-soon-page-live-five-weeks-before-launch` — Coming Soon page live ~5 weeks before launch (official min 2 weeks) (medium)
