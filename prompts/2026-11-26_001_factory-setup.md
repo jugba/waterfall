@@ -97,3 +97,9 @@ Outcome: Committed prototype; enabled git-lfs locally; allowed lfs.github.com in
 
 Outcome: macOS playtest build + kit delegated first (game code), then production polish;
 store page, art direction and game 003 prep started in parallel.
+
+## Prompt 14
+> Continue
+
+Outcome: All 4 subagents (store page, art, polish, game 003) had stopped on the account's
+5-hour usage limit; committed partial work as WIP and resumed each agent.
