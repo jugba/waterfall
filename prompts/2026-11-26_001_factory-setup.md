@@ -136,3 +136,9 @@ about Rayman Legends and how to handle scope/market risk.
 
 Outcome: Project 004-rhythm-platformer created, ACTIVE; movement + music-level greybox and a
 quick market check of rhythm platformers delegated.
+
+## Prompt 18
+> Are you able to see how much of  much of the 5hr window usage we have remaining?
+
+Outcome: No — Claude can't read remaining usage; only learns when a request is refused.
+Pointed the user to claude.ai Settings → Usage.
