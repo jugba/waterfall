@@ -34,6 +34,12 @@ Game N+2                                   [concept/proto] ...
 Assumption to verify: after a build passes review, later builds can be uploaded without
 another review, so polishing can continue after T-4w. Check this in Steamworks before relying on it.
 
+## Fun gate (added 2026-11-27, from projects/002)
+- Playable greybox to the user within 1–2 days of picking a concept.
+- Until the user says it's fun: no store page, art or polish work. Only prototype iterations
+  and deadline paperwork (Steamworks onboarding, fees).
+- Before picking a concept: confirm the team enjoys the genre (`memories/process/check-team-enjoys-genre-before-building`).
+
 ## Calendar rules
 - To join a seasonal sale, release 30 or more days before it starts (see the sale table in the launch checklist).
 - Next Fest: one per game, needs an unreleased game with a demo. Decide which game takes each fest

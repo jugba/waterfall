@@ -3,7 +3,7 @@
 - ID: 002
 - Type: game
 - Start: 2026-11-30 · Target ship date: 2027-02-11 (Thursday)
-- Status: planning
+- Status: abandoned 2026-11-27 (no-go at week-1 playtest — see POSTMORTEM.md)
 
 ## Goal
 Ship a polished 2D top-down organizing job sim on Steam (Windows + Linux/Deck) at $7.99: clients'

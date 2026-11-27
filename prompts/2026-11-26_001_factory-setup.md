@@ -115,3 +115,10 @@ Outcome: Gave Open Anyway / xattr steps; added the warning text to PLAYTEST.md; 
 
 Outcome: Go/no-go = NO-GO for Knolling Co. Stopped the polish agent; asked what wasn't fun and
 which direction to take instead.
+
+## Dialog answers (after no-go)
+> Why not fun: The genre itself
+> New game: Rockhound (Recommended)
+
+Outcome: 002 abandoned with postmortem + 2 process memories + fun-gate rule in monthly-cycle;
+project 003-rockhound created and set ACTIVE; brief + greybox delegated.

@@ -10,6 +10,9 @@ Read this at the start of every session. One line per memory: `path — learning
 - `process/steam-review-lead-time-three-weeks` — submit Steam build ≥4 weeks before launch; reviews take up to 12 business days (high)
 - `process/steam-direct-fee-pay-two-games-ahead` — pay each $100 Steam Direct fee ≥30 days ahead; pay for game N+2 when N launches (medium)
 
+- `process/check-team-enjoys-genre-before-building` — market lift isn't enough; confirm the team enjoys the genre first; organizing is out (high)
+- `process/no-production-work-before-fun-gate-passes` — no store/art/polish until the week-1 fun gate passes; playable build in 1–2 days (high)
+
 ## market
 - `market/small-scope-steam-hit-base-rate-under-1-percent` — only 0.81% of releases become small-scope hits (≥1k reviews, ≥80%); median hit ≈$340k net (est.) (high)
 - `market/small-scope-winning-tags-organizing-jobsim-incremental-coop` — Organizing/Mining/Investigation/Job Sim/Co-op/Relaxing/Incremental over-index; 2D platformer, arcade, tactics saturated (medium)
