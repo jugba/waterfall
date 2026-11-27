@@ -172,6 +172,22 @@ func all_idle() -> bool:
 	return true
 
 
+## Everything that defines the gameplay state, rounded, for comparing two runs (e.g. 2D vs 3D view).
+func snapshot() -> Dictionary:
+	var es: Array = []
+	for e in enemies:
+		es.append([e.id, e.kind, e.state, snappedf(e.pos.x, 0.001), snappedf(e.pos.y, 0.001),
+			snappedf(e.size, 0.0001), e.bites_left])
+	var hs: Array = []
+	for h in hooks:
+		hs.append([h.state, snappedf(h.pos.x, 0.001), snappedf(h.pos.y, 0.001)])
+	return {"time": snappedf(time, 0.0001), "pos": [snappedf(pos.x, 0.001), snappedf(pos.y, 0.001)],
+		"mass": snappedf(mass, 0.00001), "size": snappedf(size, 0.0001), "hp": snappedf(hp, 0.001),
+		"aim": [snappedf(aim.x, 0.0001), snappedf(aim.y, 0.0001)], "meals": meals, "deaths": deaths,
+		"wave": wave, "queue": wave_queue.size(), "traits": traits.duplicate(), "forms": forms.duplicate(),
+		"enemies": es, "hooks": hs, "shots": shots.size(), "won": won}
+
+
 ## A quiet arena for tests: no waves, no enemies.
 func clear_for_test() -> void:
 	waves_enabled = false

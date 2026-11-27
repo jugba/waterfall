@@ -15,6 +15,8 @@ const FORM_INFO := {
 }
 
 var sim: ArenaSim
+## Optional: func(world: Vector2) -> Vector2 screen position (the 3D arena sets this; 2D uses the canvas transform).
+var world_to_screen: Callable
 var _size_label: Label
 var _delta_label: Label
 var _wave_label: Label
@@ -140,7 +142,8 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	# off-screen boss: an arrow on the screen edge pointing at it
 	if sim.boss != null:
-		var sp: Vector2 = get_viewport().get_canvas_transform() * sim.boss.pos
+		var sp: Vector2 = world_to_screen.call(sim.boss.pos) if world_to_screen.is_valid() \
+			else get_viewport().get_canvas_transform() * sim.boss.pos
 		var vr := get_viewport_rect()
 		var rect := Rect2(70.0, 130.0, vr.size.x - 140.0, vr.size.y - 270.0)  # clear of the HUD rows
 		if not rect.has_point(sp):

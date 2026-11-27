@@ -5,11 +5,14 @@ extends Node2D
 ##
 ## Debug/capture (debug builds only): `-- --autoplay [--skip=SECONDS] [--frames=N] [--seed=N]`
 ## lets the pacing Bot play; --skip fast-forwards the sim before the first frame.
+## The run loop (input, buffers, hitstop, stepping) is the shared ArenaDriver, also used by the 3D arena.
 
 const TITLE_SCENE := "res://scenes/title.tscn"
 
 var sim: ArenaSim
+var driver: ArenaDriver
 var bot: Bot = null
+var seed_value := -1             # >= 0: fixed seed (tests); otherwise random or --seed=N
 var autoplay := false
 var _quit_after := -1
 var _frame := 0
@@ -25,11 +28,7 @@ var _fx: Node2D
 
 # feel state
 var _t := 0.0
-var _hitstop := 0.0
 var _trauma := 0.0
-var _hook_buffer := 0.0
-var _dodge_buffer := 0.0
-var _use_pad_aim := false
 var _vis_r := 18.0
 var _vis_rv := 0.0
 var _squash := Vector2.ONE
@@ -52,7 +51,8 @@ var _start_ms := 0
 func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	autoplay = OS.is_debug_build() and args.has("--autoplay")
-	var seed_value := randi()
+	if seed_value < 0:
+		seed_value = randi()
 	var skip := 0.0
 	for a in args:
 		if a.begins_with("--seed="):
@@ -68,6 +68,9 @@ func _ready() -> void:
 			if not sim.pending_choice.is_empty():
 				sim.choose_evolution(0)
 			sim.step(bot.think(sim))
+	driver = ArenaDriver.new(sim)
+	driver.stepped.connect(_handle_events)
+	driver.auto_chose.connect(func(): hud.hide_evolution(); _handle_events())
 	_build_layers()
 	hud.sim = sim
 	hud.evolution_chosen.connect(_on_evolution_chosen)
@@ -131,79 +134,23 @@ func _target_zoom() -> float:
 # =============================================================================
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		_use_pad_aim = false
-	elif event is InputEventJoypadMotion and absf(event.axis_value) > 0.4:
-		_use_pad_aim = true
+	driver.on_input_event(event)
 
 
-func _read_input() -> InputFrame:
-	var f := InputFrame.new()
-	f.move = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
-	var stick := Input.get_vector(&"aim_left", &"aim_right", &"aim_up", &"aim_down")
-	if stick.length() > 0.35:
-		_use_pad_aim = true
-	if _use_pad_aim:
-		if stick.length() > 0.35:
-			f.aim = stick.normalized()
-		elif f.move.length() > 0.3:
-			f.aim = f.move.normalized()
-		else:
-			f.aim = sim.aim
-		if Settings.aim_assist:
-			f.aim = _assist(f.aim)
-	else:
-		var m := get_global_mouse_position() - sim.pos
-		f.aim = m.normalized() if m.length() > 4.0 else sim.aim
-	f.hook_pressed = _hook_buffer > 0.0
-	f.dodge_pressed = _dodge_buffer > 0.0
-	return f
-
-
-## Controller aim assist: nudge onto the closest hookable prey inside a 12 degree cone.
-func _assist(aim: Vector2) -> Vector2:
-	var best := aim
-	var best_a := deg_to_rad(12.0)
-	for e in sim.enemies:
-		if not sim.hookable(e) or e.state == ArenaSim.EState.HOOKED:
-			continue
-		var to: Vector2 = e.pos - sim.pos
-		if to.length() > sim.st["hook_range"] + e.radius:
-			continue
-		var a := absf(aim.angle_to(to))
-		if a < best_a:
-			best_a = a
-			best = to.normalized()
-	return best
+func _read_input(d: ArenaDriver) -> InputFrame:
+	return d.read_devices(get_global_mouse_position())
 
 
 func _physics_process(delta: float) -> void:
+	tick(delta)
+
+
+## One physics frame: shared driver step (input, hitstop, sim), then feel + redraw.
+func tick(delta: float) -> void:
 	_t += delta
-	if Input.is_action_just_pressed(&"hook"):
-		_hook_buffer = 0.15
-	if Input.is_action_just_pressed(&"dodge"):
-		_dodge_buffer = 0.12
-	_hook_buffer -= delta
-	_dodge_buffer -= delta
-	if hud.evolution_visible() or hud.win_visible():
-		_hook_buffer = 0.0
-		_dodge_buffer = 0.0
-	elif _hitstop > 0.0:
-		_hitstop -= delta
-	else:
-		var f: InputFrame
-		if bot != null:
-			if not sim.pending_choice.is_empty():
-				_on_evolution_chosen(0)
-			f = bot.think(sim)
-		else:
-			f = _read_input()
-		if f.hook_pressed:
-			_hook_buffer = 0.0
-		if f.dodge_pressed:
-			_dodge_buffer = 0.0
-		sim.step(f)
-		_handle_events()
+	driver.bot = bot
+	driver.poll_buttons()
+	driver.tick(delta, hud.evolution_visible() or hud.win_visible(), _read_input)
 	_update_feel(delta)
 	_floor.queue_redraw()
 	_glow_back.queue_redraw()
@@ -242,7 +189,6 @@ func _handle_events() -> void:
 				_squash = Vector2(1.15, 0.9)
 				_yank_chain = 0
 			"catch":
-				_hitstop = float(sim.B["hook"]["hitstop_boss" if ev["boss"] else "hitstop_catch"])
 				_shake(0.22 if not ev["boss"] else 0.5)
 				Sfx.play("catch", -2.0)
 				_flash_enemy(ev["id"])
@@ -259,7 +205,6 @@ func _handle_events() -> void:
 			"eat":
 				_on_eat(ev)
 			"bite":
-				_hitstop = 0.12
 				_shake(0.7)
 				_chomp = 1.0
 				_happy = 0.6
@@ -341,7 +286,6 @@ func _on_eat(ev: Dictionary) -> void:
 	var p: Vector2 = ev["pos"]
 	var ratio: float = ev["enemy_radius"] / maxf(1.0, sim.st["radius"])
 	_ghosts.append({"kind": ev["kind"], "from": p, "r": ev["enemy_radius"], "t": 0.0})
-	_hitstop = maxf(_hitstop, float(sim.B["hook"]["hitstop_eat"]) * (1.0 + ratio))
 	_shake(0.16 + 0.35 * ratio)
 	_chomp = 1.0
 	_happy = 0.45

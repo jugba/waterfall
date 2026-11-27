@@ -73,3 +73,34 @@ Sound on: the catch, yank and chomp sounds are half of the feel.
    point where you were bored or waiting? Was finally eating the Leviathan a payoff?
 5. **Gut call:** after the boss (or a death), did you want another run? With real art and music,
    would you pay ~$10 for a few hours of this? What one change would make it more fun?
+
+---
+
+## Addendum v0.2.0 — compare 2D vs 3D: which feels better and why?
+
+v0.2.0 adds **Play 3D Arena (test)** on the title screen, next to the normal **Play** (2D). It is the
+**same game with the same rules and controls** (a test proves both modes produce identical gameplay
+for the same inputs); only the view changes: an angled 3D camera that pulls back as you grow,
+low-poly 3D creatures with their trait parts, a sagging 3D hook line, fog, light shafts and glow.
+
+| Platform | File | Run |
+|---|---|---|
+| macOS (Apple Silicon + Intel) | `Hookmaw-0.2.0-macos-universal.zip` (61 MB) | unzip → `Hookmaw.app` (same Gatekeeper steps as in section 1) |
+| Windows 10/11 | `Hookmaw-0.2.0-windows-x86_64.zip` (38 MB) | unzip → `Hookmaw.exe` |
+| Linux / Steam Deck desktop | `Hookmaw-0.2.0-linux-x86_64.zip` (28 MB) | unzip → `./Hookmaw.x86_64` |
+
+**How to test (about 10 minutes):** play ~4 minutes of **Play** (2D), back to the title (Esc → Quit to
+title), then ~4 minutes of **Play 3D Arena (test)**, then whichever you preferred again for a minute.
+Mouse aim in 3D points at the spot under the cursor on the play plane; controller aim is unchanged.
+(Screenshots in `assets/greybox/3d-*.png` were rendered in software in a container; on a real GPU
+it should look smoother.)
+
+Answer right after:
+1. **Which feels better to play, 2D or 3D, and why?** (aiming, reading where things are, the hook
+   throw/catch/yank, the chomp)
+2. **Does growing read better in 3D** (the body, the shadow, the camera pulling back), or worse?
+3. **Clarity:** in 3D, was it ever hard to tell what you could hook (red ring = too big), where shots
+   were, or where you were aiming?
+4. **Charm:** do the 3D creatures and trait parts (fins, plates, horns, spines) make you care more
+   about Morsel than the 2D shapes?
+5. **Performance:** did 3D ever stutter or feel laggy on your machine? (Which Mac/PC?)

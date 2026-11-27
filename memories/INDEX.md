@@ -53,6 +53,8 @@ Read this at the start of every session. One line per memory: `path — learning
 - `tech/macos-gatekeeper-unnotarized-builds-need-open-anyway` — unsigned Mac builds need Open Anyway / xattr; notarize for release (high)
 - `tech/platformer-controller-as-pure-fixed-step-sim-for-tests` — node-free AABB controller: jump/coyote/buffer/wall-jump are unit tests, a 70 s level replay runs in ~50 ms (high)
 - `tech/godot-headless-script-hangs-on-parse-error-use-timeout` — a `-s` script with a broken dependency never quits; always `timeout` + log file; `:=` on untyped values is a 4.7 parse error (high)
+- `tech/godot-3d-billboards-need-keep-scale-floor-glow-pools` — 3D billboards ignore node/particle scale unless billboard_keep_scale; ground glows as additive floor pools, not floor-clipped halos (high)
+- `tech/share-run-loop-driver-across-views-and-test-snapshot-parity` — input mapping, buffers, hitstop and stepping in a node-free driver shared by 2D/3D views; snapshot-equality tests prove identical gameplay (high)
 
 ## marketing
 - `marketing/coming-soon-page-live-five-weeks-before-launch` — Coming Soon page live ~5 weeks before launch (official min 2 weeks) (medium)

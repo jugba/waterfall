@@ -6,12 +6,10 @@ finishes or waits on the user._
 ## Active projects (user chose parallel prototypes, 2026-11-27)
 - `projects/004-rhythm-platformer` — **Beatrunner**, original rhythm platformer. Phase: **waiting on the user's fun gate**.
 - `projects/005-hook-and-grow` — original premium hook→pull→eat→grow action game (inspired by the
-  Butcher Hero review, `projects/_research/butcher-hero-app-review.md`; no timers/paywalls). Phase: **Hookmaw 0.1.0 greybox delivered, waiting on the user's fun gate**.
+  Butcher Hero review, `projects/_research/butcher-hero-app-review.md`; no timers/paywalls). Phase: **Hookmaw 0.2.0 (2D + 3D arena modes) delivered, waiting on the user's fun gate**.
 
 ## Running work
-| Work | Who | Started | Output |
-|---|---|---|---|
-| Hookmaw 3D-arena mode (v0.2.0-3d) + Mac build | subagent | 2026-11-27 | `projects/005-hook-and-grow/` |
+_None._
 
 ## Next steps (in order)
 1. Beatrunner 0.1.0 greybox delivered to the user 2026-11-27 (51 tests, Mac/Win/Linux builds).

@@ -1,7 +1,8 @@
 extends Control
-## Title screen: Play / Settings / Quit. The first button takes focus so controllers work at once.
+## Title screen: Play (2D) / Play 3D Arena (test) / Settings / Quit. The first button takes focus so controllers work at once.
 
 const GAME_SCENE := "res://scenes/game.tscn"
+const GAME_3D_SCENE := "res://scenes/game_3d.tscn"   # "3D Arena (test)": same rules, 3D view
 
 @onready var _menu: Control = %Menu
 @onready var _settings_menu: Control = %SettingsMenu
@@ -9,6 +10,7 @@ const GAME_SCENE := "res://scenes/game.tscn"
 
 func _ready() -> void:
 	%Play.pressed.connect(_on_play)
+	%Play3D.pressed.connect(func(): SceneChanger.change_to(GAME_3D_SCENE))
 	%Settings.pressed.connect(_on_settings)
 	%Quit.pressed.connect(get_tree().quit)
 	%Quit.visible = OS.get_name() != "Web"
