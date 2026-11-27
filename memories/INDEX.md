@@ -23,6 +23,8 @@ Read this at the start of every session. One line per memory: `path — learning
 - `market/steam-search-review-count-is-english-only` — search-row review counts are language-filtered; all-language totals ≈1.39× (high)
 - `market/steamspy-has-no-data-for-most-new-games` — SteamSpy owners/tags empty for ~3/4 of new games; use Steam search tags + histogram (high)
 - `market/gambling-tag-cooling-incremental-supply-rising-2026` — Gambling-tag hit rate fell below base by Q3 2026 while Incremental supply rose to 9.3% of releases; keep the reveal, drop the casino skin; Mining still under-supplied (medium)
+- `market/rhythm-healthy-platformer-saturated-sell-rhythm-platformers-as-rhythm` — Rhythm 1.36×/Music 2.4× core lift vs any platformer 0.39×; Platformer+Rhythm 52 releases, none >184 reviews; lead with rhythm tags (medium)
+- `market/linear-rhythm-runners-cap-near-5k-reviews-editor-or-coop-breaks-out` — linear rhythm runners/platformers top out ~2–8k lifetime reviews; editor/UGC, co-op or movement+charm break out (medium)
 ## design
 - `design/organizing-hits-count-the-mess-and-unlock-speed` — organizing hits pitch a counted mess ("3,072 books"), show the fill-up, and unlock speed-ups (medium)
 - `design/second-verb-needed-as-organizing-supply-explodes` — Organizing releases 7→192/quarter in 2026; add a craft/repair/deduce/pack verb or new view (medium)
