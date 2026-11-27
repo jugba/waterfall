@@ -20,7 +20,7 @@ projects/NNN-name/
 ├── build/               # (gitignored) exports, test-results.xml, logs
 └── game/                # the Godot project (open game/project.godot in the editor)
     ├── project.godot    # 1280x800 base, canvas_items stretch, Compatibility renderer, InputMap
-    ├── export_presets.cfg   # "Linux" (also used by Steam Deck) and "Windows"
+    ├── export_presets.cfg   # "Linux" (also used by Steam Deck), "Windows", "macOS" (universal, ad-hoc signed)
     ├── autoload/        # globals, registered in project.godot
     │   ├── settings.gd      # Settings: volumes, fullscreen, vsync, rebinding -> user://settings.cfg
     │   ├── save_game.gd     # SaveGame: JSON slots, atomic writes, format_version + _migrate()
@@ -62,20 +62,20 @@ menus, and restyle them.
 ## Build, test, export
 
 ```bash
-tools/godot/build.sh projects/002-my-game                 # import + tests + Linux + Windows
+tools/godot/build.sh projects/002-my-game                 # import + tests + Linux + Windows + macOS
 tools/godot/build.sh projects/002-my-game --no-export     # import + tests only (fast loop)
-tools/godot/build.sh projects/002-my-game --platform linux
+tools/godot/build.sh projects/002-my-game --platform linux   # or windows | macos
 GODOT=/path/to/godot tools/godot/build.sh projects/002-my-game   # use an existing binary
 ```
 
 - The Godot binary and export templates are installed on first use by `tools/godot/install-godot.sh`
   from GitHub releases (binary to `~/.cache/godot/<v>/`, templates to
   `~/.local/share/godot/export_templates/<v>.stable/`). The templates download is ~1.3 GB, and only
-  the Linux and Windows files are kept.
+  the Linux, Windows and macOS files are kept.
 - GUT is cloned at the pinned tag by `tools/godot/fetch-gut.sh` into `game/addons/gut/`.
 - The build fails if import, any test, or any export fails, or if the logs contain a script or
   parse error. Outputs go to `build/linux/<GAME_NAME>.x86_64`, `build/windows/<GAME_NAME>.exe`
-  (PCK embedded, one file each), `build/test-results.xml` (JUnit) and `build/logs/`.
+  (PCK embedded, one file each), `build/macos/<GAME_NAME>.zip` (universal `<GAME_NAME>.app`), `build/test-results.xml` (JUnit) and `build/logs/`.
 - Run the game: `build/linux/<GAME_NAME>.x86_64`, or open `game/project.godot` in the Godot 4.7 editor.
 - Tests: `godot --headless --path game -s res://addons/gut/gut_cmdln.gd -gexit` (config in
   `game/.gutconfig.json`; add `-gselect=test_settings` to run one script). GUT fails a test on any
@@ -83,6 +83,11 @@ GODOT=/path/to/godot tools/godot/build.sh projects/002-my-game   # use an existi
   `assert_push_error("text")` or `assert_engine_error("text")`.
 - `tests/` and `addons/gut/` are excluded from exports (`exclude_filter` in `export_presets.cfg`).
 - Commit the `*.uid` and `*.import` files Godot generates; never commit `game/.godot/` or `build/`.
+- macOS: the preset exports a universal (arm64 + x86_64) `.app` in a `.zip`, ad-hoc signed by Godot's
+  built-in signer and **not notarized** (no Apple Developer ID). Players must allow it once (right-click
+  > Open, or System Settings > Privacy & Security > Open Anyway). Universal/arm64 needs
+  `rendering/textures/vram_compression/import_etc2_astc=true` (set in `project.godot`). Set
+  `application/bundle_identifier` per game. Details: `memories/tech/godot-macos-export-unsigned-from-linux`.
 - Windows `.exe` icon and version metadata are off (`application/modify_resources=false`),
   because that needs rcedit + Wine, and neither is installed. Steam shows its own icons, so this
   only matters for DRM-free builds.

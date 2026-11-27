@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 # Headless import -> tests -> export for a game project made from projects/_template.
 #
-#   tools/godot/build.sh <project-dir> [--no-tests] [--no-export] [--platform linux|windows|all]
+#   tools/godot/build.sh <project-dir> [--no-tests] [--no-export] [--platform linux|windows|macos|all]
 #
 # <project-dir> contains build.env and game/project.godot (e.g. projects/002-my-game).
 # Outputs:  <project-dir>/build/linux/<GAME_NAME>.x86_64
 #           <project-dir>/build/windows/<GAME_NAME>.exe
+#           <project-dir>/build/macos/<GAME_NAME>.zip   (universal <GAME_NAME>.app, ad-hoc signed)
 #           <project-dir>/build/test-results.xml   (JUnit, for CI)
 # Godot binary: $GODOT if set, else installed/pinned via tools/godot/install-godot.sh.
 # Exit code is non-zero if import, any test, or any export fails.
 set -euo pipefail
 
-usage() { sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
+usage() { sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 2; }
 [[ $# -ge 1 ]] || usage
 PROJECT_DIR="$(cd "$1" && pwd)"; shift
 RUN_TESTS=1; RUN_EXPORT=1; PLATFORM=all
@@ -19,7 +20,8 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --no-tests) RUN_TESTS=0 ;;
     --no-export) RUN_EXPORT=0 ;;
-    --platform) PLATFORM="${2:?}"; shift ;;
+    --platform) PLATFORM="${2:?}"; shift
+      case "$PLATFORM" in linux|windows|macos|all) ;; *) echo "unknown platform: $PLATFORM" >&2; usage ;; esac ;;
     -h|--help) usage ;;
     *) echo "unknown option: $1" >&2; usage ;;
   esac
@@ -90,6 +92,31 @@ export_one() {  # <preset name> <output path>
 if [[ $RUN_EXPORT -eq 1 ]]; then
   [[ $PLATFORM == all || $PLATFORM == linux ]] && export_one "Linux" "$BUILD_DIR/linux/$GAME_NAME.x86_64"
   [[ $PLATFORM == all || $PLATFORM == windows ]] && export_one "Windows" "$BUILD_DIR/windows/$GAME_NAME.exe"
+  if [[ $PLATFORM == all || $PLATFORM == macos ]]; then
+    # Exported from Linux: universal .app in a .zip, ad-hoc signed by Godot's built-in signer,
+    # not notarized (no Apple Developer ID). See memories/tech/godot-macos-export-unsigned-from-linux.
+    export_one "macOS" "$BUILD_DIR/macos/$GAME_NAME.zip"
+    # Godot names the bundle after config/name ("My Game (demo).app"); rename the top folder to
+    # <GAME_NAME>.app. The bundle folder name is not covered by the code signature.
+    python3 -I - "$BUILD_DIR/macos/$GAME_NAME.zip" "$GAME_NAME.app" <<'PY'
+import os, sys, zipfile
+src, new = sys.argv[1], sys.argv[2]
+with zipfile.ZipFile(src) as z:
+    old = z.namelist()[0].split("/")[0]
+    if old == new:
+        sys.exit(0)
+    tmp = src + ".tmp"
+    with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as out:
+        for info in z.infolist():
+            data = z.read(info)
+            info.filename = new + info.filename[len(old):]
+            out.writestr(info, data)
+os.replace(tmp, src)
+print(f"renamed {old} -> {new}")
+PY
+    unzip -l "$BUILD_DIR/macos/$GAME_NAME.zip" | grep -q "\.app/Contents/MacOS/" \
+      || { echo "!! macOS zip has no .app/Contents/MacOS/ executable" >&2; exit 1; }
+  fi
 fi
 
 step "done"

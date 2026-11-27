@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install a pinned Godot editor binary and the Linux + Windows release export templates.
+# Install a pinned Godot editor binary and the Linux, Windows and macOS export templates.
 #
 #   tools/godot/install-godot.sh 4.7.1        # prints the path of the godot binary on stdout
 #
@@ -29,11 +29,11 @@ if [[ ! -x "$BIN" ]]; then
   chmod +x "$BIN"
 fi
 
-need=(linux_release.x86_64 linux_debug.x86_64 windows_release_x86_64.exe windows_debug_x86_64.exe version.txt)
+need=(linux_release.x86_64 linux_debug.x86_64 windows_release_x86_64.exe windows_debug_x86_64.exe macos.zip version.txt)
 missing=0
 for f in "${need[@]}"; do [[ -f "$TPL_DIR/$f" ]] || missing=1; done
 if [[ $missing -eq 1 ]]; then
-  log "downloading export templates $VERSION (~1.3 GB, extracting Linux + Windows only)"
+  log "downloading export templates $VERSION (~1.3 GB, extracting Linux + Windows + macOS only)"
   mkdir -p "$TPL_DIR"
   tmp="$(mktemp -d)"
   curl -fsSL -o "$tmp/templates.tpz" "$BASE/Godot_v${VERSION}-stable_export_templates.tpz"

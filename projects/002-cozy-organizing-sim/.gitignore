@@ -13,3 +13,6 @@ build/
 *.tmp
 .DS_Store
 Thumbs.db
+
+# Playtest builds made by tools/godot/build.sh (shared out of band, never committed)
+playtest/builds/

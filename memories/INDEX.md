@@ -33,6 +33,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `tech/gut-fails-tests-on-unasserted-engine-errors` — GUT 9.7 fails tests on unexpected engine errors/push_error; assert intended ones, avoid error-logging APIs (high)
 - `tech/godot-generate-project-settings-headless` — generate InputMap/bus layout via headless script + ProjectSettings.save(); joypad device -1 (high)
 - `tech/godot-headless-capture-xvfb-write-movie` — screenshots/clips in the container: xvfb-run + opengl3 + --write-movie + an --autoplay user arg (high)
+- `tech/godot-macos-export-unsigned-from-linux` — Linux exports a universal ad-hoc-signed macOS .app zip; needs import_etc2_astc=true; unnotarized, players allow once (high)
 ## marketing
 - `marketing/coming-soon-page-live-five-weeks-before-launch` — Coming Soon page live ~5 weeks before launch (official min 2 weeks) (medium)
 - `marketing/steam-release-blocks-discounts-30-days` — release blocks discounts 30 days except ≤40% launch discount; release ≥30 days before a seasonal sale (high)

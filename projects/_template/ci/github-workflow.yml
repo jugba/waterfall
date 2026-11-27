@@ -56,7 +56,7 @@ jobs:
           path: |
             ~/.cache/godot/${{ steps.env.outputs.godot }}
             ~/.local/share/godot/export_templates/${{ steps.env.outputs.godot }}.stable
-          key: godot-${{ steps.env.outputs.godot }}-linux-windows
+          key: godot-${{ steps.env.outputs.godot }}-linux-windows-macos
 
       - name: Import, test, export
         run: tools/godot/build.sh "$PROJECT_DIR"
@@ -75,6 +75,7 @@ jobs:
           path: |
             ${{ env.PROJECT_DIR }}/build/linux
             ${{ env.PROJECT_DIR }}/build/windows
+            ${{ env.PROJECT_DIR }}/build/macos
           retention-days: 14
 
   deploy:
