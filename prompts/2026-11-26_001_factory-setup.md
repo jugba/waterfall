@@ -164,3 +164,8 @@ Outcome: App Store page read via web-fetch agent; review given in chat.
 
 Outcome: Project 005-hook-and-grow created (original premium take on hook-pull-eat-grow, no timers);
 greybox delegated while the user playtests 004 Beatrunner. ACTIVE lists both (user-approved parallel prototypes).
+
+## Prompt 21
+> Can we create 3d or 2.5d games?
+
+Outcome: Answered (yes, Godot 3D; trade-offs on art, rendering checks and scope); asked via dialog what to do with it.
