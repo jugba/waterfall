@@ -1,0 +1,217 @@
+{
+	"_doc": "All Hookmaw tuning. Sizes are in 'size units'; body radius in px = size * px_per_size. Tests in tests/ read this file, so retune here and run the build: pacing promises fail loudly.",
+	"tick_hz": 60,
+	"arena_radius": 2600.0,
+	"px_per_size": 6.0,
+	"player": {
+		"start_size": 3.0,
+		"start_mass": 1.0,
+		"size_exponent": 0.3333,
+		"eat_efficiency": 0.26,
+		"base_speed": 300.0,
+		"speed_size_exponent": 0.55,
+		"accel": 9.0,
+		"hp_base": 60.0,
+		"hp_per_size": 9.0,
+		"regen_frac_per_s": 0.03,
+		"regen_delay": 2.5,
+		"heal_on_eat": 0.12,
+		"invuln_after_hit": 0.5,
+		"dodge_speed_mult": 3.2,
+		"dodge_time": 0.18,
+		"dodge_invuln": 0.26,
+		"dodge_cooldown": 0.75,
+		"efficiency_size_decay": 0.9
+	},
+	"hook": {
+		"speed": 1500.0,
+		"return_speed": 1900.0,
+		"base_range": 230.0,
+		"range_per_px_radius": 2.6,
+		"hook_radius": 12.0,
+		"catch_ratio": 1.1,
+		"auto_reel": 55.0,
+		"yank_impulse": 430.0,
+		"yank_cooldown": 0.22,
+		"pull_drag": 6.0,
+		"snap_factor": 1.45,
+		"struggle_base": 50.0,
+		"struggle_per_mass_ratio": 90.0,
+		"throw_cooldown": 0.12,
+		"spike_damage": 14.0,
+		"hitstop_catch": 0.075,
+		"hitstop_eat": 0.05,
+		"hitstop_boss": 0.18
+	},
+	"traits": {
+		"cap": 6,
+		"armour_damage_cut": 0.1,
+		"speed_bonus": 0.07,
+		"dodge_cd_cut": 0.07,
+		"damage_yank_bonus": 0.15,
+		"damage_shockwave_px": 60.0,
+		"pierce_range_bonus": 0.06,
+		"_doc": "trait level = 1 + floor(sqrt(eaten / 3)), capped: 1 meal -> L1, 3 -> L2, 12 -> L3, 27 -> L4, 48 -> L5, 75 -> L6"
+	},
+	"evolution": {
+		"at_sizes": [
+			8.0,
+			15.0,
+			25.0
+		],
+		"multi_spread_deg": 16.0,
+		"chain_range_mult": 0.75,
+		"whirl_time": 0.7,
+		"whirl_turns_per_s": 2.2,
+		"whirl_range_mult": 0.7,
+		"long_range_bonus": 0.3
+	},
+	"enemies": {
+		"nibbler": {
+			"trait": "",
+			"speed": 95.0,
+			"dmg": 9.0,
+			"meat": 1.0,
+			"rel": [
+				0.35,
+				0.55
+			]
+		},
+		"darter": {
+			"trait": "speed",
+			"speed": 230.0,
+			"dmg": 10.5,
+			"meat": 0.8,
+			"rel": [
+				0.4,
+				0.6
+			],
+			"dash_speed": 620.0,
+			"dash_every": 2.2,
+			"evade_chance": 0.5
+		},
+		"shellback": {
+			"trait": "armour",
+			"speed": 70.0,
+			"dmg": 18.0,
+			"meat": 0.6,
+			"rel": [
+				0.7,
+				1.15
+			],
+			"turn_deg_s": 70.0,
+			"shell_cone_deg": 130.0,
+			"lunge_every": 2.6,
+			"lunge_speed": 300.0
+		},
+		"spitter": {
+			"trait": "damage",
+			"speed": 110.0,
+			"dmg": 13.5,
+			"meat": 0.9,
+			"rel": [
+				0.45,
+				0.65
+			],
+			"keep_range": 380.0,
+			"fire_every": 2.3,
+			"shot_speed": 330.0
+		},
+		"puffer": {
+			"trait": "pierce",
+			"speed": 75.0,
+			"dmg": 15.0,
+			"meat": 1.1,
+			"rel": [
+				0.5,
+				0.75
+			],
+			"spiky_time": 2.4,
+			"calm_time": 1.8
+		},
+		"boss": {
+			"trait": "",
+			"speed": 120.0,
+			"dmg": 22.0,
+			"meat": 0.6,
+			"size": 46.0,
+			"charge_speed": 520.0,
+			"charge_every": 5.0,
+			"ring_every": 7.0,
+			"ring_shots": 14,
+			"shot_speed": 300.0,
+			"struggle_mult": 1.9,
+			"bites": 4,
+			"radius_mult": 1.45
+		}
+	},
+	"waves": {
+		"max_alive": 11,
+		"advance_when_left": 1,
+		"spawn_gap": 0.6,
+		"list": [
+			{
+				"nibbler": 34
+			},
+			{
+				"nibbler": 25,
+				"darter": 17
+			},
+			{
+				"nibbler": 25,
+				"darter": 13,
+				"shellback": 8
+			},
+			{
+				"nibbler": 28,
+				"spitter": 21,
+				"darter": 11
+			},
+			{
+				"nibbler": 24,
+				"puffer": 24,
+				"shellback": 12,
+				"darter": 12
+			},
+			{
+				"nibbler": 24,
+				"spitter": 17,
+				"puffer": 17,
+				"shellback": 17
+			},
+			{
+				"nibbler": 31,
+				"darter": 24,
+				"spitter": 17,
+				"puffer": 17
+			},
+			{
+				"nibbler": 31,
+				"shellback": 24,
+				"spitter": 17,
+				"puffer": 17,
+				"darter": 12
+			},
+			{
+				"nibbler": 38,
+				"darter": 17,
+				"spitter": 17,
+				"puffer": 17,
+				"shellback": 17
+			}
+		],
+		"boss_after_wave": 9,
+		"boss_minions": {
+			"nibbler": 7,
+			"darter": 3,
+			"puffer": 1,
+			"spitter": 1
+		},
+		"wave_break": 2.5,
+		"spawn_dist": [
+			480.0,
+			620.0
+		],
+		"opening_burst": 4
+	}
+}

@@ -14,7 +14,7 @@ const BUSES: Array[String] = ["Master", "Music", "SFX"]
 ## Actions shown in the controls menu. Add game-specific actions here and in project.godot.
 const REBINDABLE_ACTIONS: Array[StringName] = [
 	&"move_up", &"move_down", &"move_left", &"move_right",
-	&"action_primary", &"action_secondary", &"pause",
+	&"hook", &"dodge", &"pause",
 ]
 const DEFAULT_VOLUMES := {"Master": 0.8, "Music": 0.7, "SFX": 0.8}
 
@@ -22,6 +22,9 @@ var path := DEFAULT_PATH
 var volumes: Dictionary = DEFAULT_VOLUMES.duplicate()
 var fullscreen := false
 var vsync := true
+## Gameplay comfort options (Settings menu > Gameplay).
+var screen_shake := 1.0      # 0 = off .. 1 = full
+var aim_assist := true       # controller only: nudges the aim onto a hookable target
 
 var _default_events: Dictionary = {}  # StringName -> Array[InputEvent]
 
@@ -77,6 +80,18 @@ func _apply_display() -> void:
 		DisplayServer.VSYNC_ENABLED if vsync else DisplayServer.VSYNC_DISABLED)
 
 
+# --- gameplay ----------------------------------------------------------------
+
+func set_screen_shake(v: float) -> void:
+	screen_shake = clampf(v, 0.0, 1.0)
+	changed.emit()
+
+
+func set_aim_assist(on: bool) -> void:
+	aim_assist = on
+	changed.emit()
+
+
 # --- input -------------------------------------------------------------------
 
 static func is_controller_event(event: InputEvent) -> bool:
@@ -121,6 +136,9 @@ static func _event_label(e: InputEvent) -> String:
 		var code: Key = e.physical_keycode if e.physical_keycode != KEY_NONE else e.keycode
 		return OS.get_keycode_string(DisplayServer.keyboard_get_label_from_physical(code)) \
 			if DisplayServer.get_name() != "headless" else OS.get_keycode_string(code)
+	if e is InputEventMouseButton:
+		return {MOUSE_BUTTON_LEFT: "Left click", MOUSE_BUTTON_RIGHT: "Right click",
+			MOUSE_BUTTON_MIDDLE: "Middle click"}.get(e.button_index, "Mouse %d" % e.button_index)
 	if e is InputEventJoypadButton:
 		return "Pad %d" % e.button_index
 	if e is InputEventJoypadMotion:
@@ -131,6 +149,8 @@ static func _event_label(e: InputEvent) -> String:
 static func event_to_dict(e: InputEvent) -> Dictionary:
 	if e is InputEventKey:
 		return {"type": "key", "code": int(e.physical_keycode if e.physical_keycode else e.keycode)}
+	if e is InputEventMouseButton:
+		return {"type": "mouse_button", "button": int(e.button_index)}
 	if e is InputEventJoypadButton:
 		return {"type": "pad_button", "button": int(e.button_index)}
 	if e is InputEventJoypadMotion:
@@ -144,6 +164,10 @@ static func dict_to_event(d: Dictionary) -> InputEvent:
 			var k := InputEventKey.new()
 			k.physical_keycode = int(d.get("code", 0)) as Key
 			return k
+		"mouse_button":
+			var mb := InputEventMouseButton.new()
+			mb.button_index = int(d.get("button", 1)) as MouseButton
+			return mb
 		"pad_button":
 			var b := InputEventJoypadButton.new()
 			b.button_index = int(d.get("button", 0)) as JoyButton
@@ -166,6 +190,8 @@ func save_settings() -> Error:
 		cfg.set_value("audio", bus, volumes.get(bus, 1.0))
 	cfg.set_value("display", "fullscreen", fullscreen)
 	cfg.set_value("display", "vsync", vsync)
+	cfg.set_value("gameplay", "screen_shake", screen_shake)
+	cfg.set_value("gameplay", "aim_assist", aim_assist)
 	for action in REBINDABLE_ACTIONS:
 		var list: Array = []
 		for e in InputMap.action_get_events(action):
@@ -181,6 +207,8 @@ func load_settings() -> void:
 	volumes = DEFAULT_VOLUMES.duplicate()
 	fullscreen = false
 	vsync = true
+	screen_shake = 1.0
+	aim_assist = true
 	reset_bindings()
 	var cfg := ConfigFile.new()
 	if cfg.load(path) == OK:
@@ -188,6 +216,8 @@ func load_settings() -> void:
 			volumes[bus] = clampf(float(cfg.get_value("audio", bus, volumes.get(bus, 1.0))), 0.0, 1.0)
 		fullscreen = bool(cfg.get_value("display", "fullscreen", false))
 		vsync = bool(cfg.get_value("display", "vsync", true))
+		screen_shake = clampf(float(cfg.get_value("gameplay", "screen_shake", 1.0)), 0.0, 1.0)
+		aim_assist = bool(cfg.get_value("gameplay", "aim_assist", true))
 		for action in REBINDABLE_ACTIONS:
 			var list = cfg.get_value("input", String(action), null)
 			if list is Array and not list.is_empty():

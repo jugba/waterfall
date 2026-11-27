@@ -17,7 +17,7 @@ func after_each() -> void:
 	DirAccess.remove_absolute(SaveGame.directory)
 	SaveGame.directory = _orig_save_dir
 	get_tree().paused = false
-	for a in [&"move_right", &"pause"]:
+	for a in [&"move_right", &"pause", &"hook"]:
 		Input.action_release(a)
 
 
@@ -61,14 +61,16 @@ func test_main_scene_set() -> void:
 	assert_true(ResourceLoader.exists(main), "main scene %s exists" % main)
 
 
-func test_player_moves_right_on_input() -> void:
-	var player: CharacterBody2D = add_child_autofree(load("res://scenes/player.tscn").instantiate())
-	player.position = Vector2(200, 200)
-	Input.action_press(&"move_right")
-	await wait_physics_frames(10)
-	Input.action_release(&"move_right")
-	assert_gt(player.position.x, 200.0, "moved right")
-	assert_almost_eq(player.position.y, 200.0, 0.5, "did not drift vertically")
+func test_game_scene_runs_and_eats() -> void:
+	var game: Node = add_child_autofree(load("res://scenes/game.tscn").instantiate())
+	var sim: ArenaSim = game.sim
+	assert_not_null(sim)
+	sim.clear_for_test()
+	var e = sim.spawn("nibbler", sim.pos + Vector2(120, 0), 1.5)
+	game.bot = Bot.new(1)  # drive it with the bot for a few seconds
+	await wait_physics_frames(240)
+	assert_false(sim.enemies.has(e), "the scene steps the sim and the bot eats")
+	assert_gt(sim.meals, 0)
 
 
 func test_pause_menu_pauses_and_resumes() -> void:
@@ -81,13 +83,26 @@ func test_pause_menu_pauses_and_resumes() -> void:
 	assert_false(get_tree().paused)
 
 
-func test_game_scene_saves_player_position() -> void:
+func test_evolution_panel_opens_and_applies_choice() -> void:
+	var game: Node = add_child_autofree(load("res://scenes/game.tscn").instantiate())
+	var sim: ArenaSim = game.sim
+	sim.clear_for_test()
+	sim.mass = Growth.mass_from_size(sim.B, float(sim.B["evolution"]["at_sizes"][0]) + 0.1)
+	sim._recalc()
+	await wait_physics_frames(3)
+	assert_true(game.hud.evolution_visible(), "choice shown")
+	var first: String = sim.pending_choice[0]
+	game.hud.evolution_chosen.emit(0)
+	assert_false(game.hud.evolution_visible())
+	assert_eq(int(sim.forms[first]), 1)
+
+
+func test_game_scene_saves_records_on_exit() -> void:
 	var game: Node = load("res://scenes/game.tscn").instantiate()
 	add_child(game)
-	game.get_node("Player").position = Vector2(300, 333)
-	game.free()  # _exit_tree saves
+	game.free()  # _exit_tree records the run
 	var data := SaveGame.load_slot(0)
-	assert_almost_eq(float(data.get("player_y", 0)), 333.0, 0.01)
+	assert_eq(int(data.get("runs", 0)), 1)
 
 
 func test_scene_changer_rejects_missing_scene() -> void:

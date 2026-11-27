@@ -62,6 +62,19 @@ func _build() -> void:
 	vs.button_pressed = Settings.vsync
 	vs.toggled.connect(Settings.set_vsync)
 	_add_row("V-Sync", [vs])
+	_add_header("Gameplay")
+	var shake := HSlider.new()
+	shake.min_value = 0.0
+	shake.max_value = 1.0
+	shake.step = 0.1
+	shake.value = Settings.screen_shake
+	shake.custom_minimum_size.x = 320
+	shake.value_changed.connect(Settings.set_screen_shake)
+	_add_row("Screen shake", [shake])
+	var assist := CheckButton.new()
+	assist.button_pressed = Settings.aim_assist
+	assist.toggled.connect(Settings.set_aim_assist)
+	_add_row("Aim assist (pad)", [assist])
 	_add_header("Controls (keyboard / controller)")
 	for action in Settings.REBINDABLE_ACTIONS:
 		var key_btn := _make_bind_button(action, false)
