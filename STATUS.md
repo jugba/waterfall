@@ -9,7 +9,9 @@ finishes or waits on the user._
   Butcher Hero review, `projects/_research/butcher-hero-app-review.md`; no timers/paywalls). Phase: **Hookmaw 0.1.0 greybox delivered, waiting on the user's fun gate**.
 
 ## Running work
-_None._
+| Work | Who | Started | Output |
+|---|---|---|---|
+| Hookmaw 3D-arena mode (v0.2.0-3d) + Mac build | subagent | 2026-11-27 | `projects/005-hook-and-grow/` |
 
 ## Next steps (in order)
 1. Beatrunner 0.1.0 greybox delivered to the user 2026-11-27 (51 tests, Mac/Win/Linux builds).

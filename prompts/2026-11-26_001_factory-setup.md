@@ -169,3 +169,8 @@ greybox delegated while the user playtests 004 Beatrunner. ACTIVE lists both (us
 > Can we create 3d or 2.5d games?
 
 Outcome: Answered (yes, Godot 3D; trade-offs on art, rendering checks and scope); asked via dialog what to do with it.
+
+## Dialog answer (3D)
+> 2.5D or 3D Hookmaw test
+
+Outcome: Delegated a 3D-arena version of Hookmaw (same gameplay, 3D view) as a selectable mode in 005.
