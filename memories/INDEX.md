@@ -19,6 +19,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `market/early-access-graduates-inflate-new-release-lists` — 22% of ≥1k-review "new releases" are EA grads/re-releases; filter by first-review date (high)
 - `market/steam-search-review-count-is-english-only` — search-row review counts are language-filtered; all-language totals ≈1.39× (high)
 - `market/steamspy-has-no-data-for-most-new-games` — SteamSpy owners/tags empty for ~3/4 of new games; use Steam search tags + histogram (high)
+- `market/gambling-tag-cooling-incremental-supply-rising-2026` — Gambling-tag hit rate fell below base by Q3 2026 while Incremental supply rose to 9.3% of releases; keep the reveal, drop the casino skin; Mining still under-supplied (medium)
 ## design
 - `design/organizing-hits-count-the-mess-and-unlock-speed` — organizing hits pitch a counted mess ("3,072 books"), show the fill-up, and unlock speed-ups (medium)
 - `design/second-verb-needed-as-organizing-supply-explodes` — Organizing releases 7→192/quarter in 2026; add a craft/repair/deduce/pack verb or new view (medium)
@@ -47,3 +48,4 @@ Read this at the start of every session. One line per memory: `path — learning
 - `marketing/no-paid-ads-for-games-under-10-dollars` — at ~$1/wishlist, ads break even at best for ≤$10 games; only small capped tests (medium)
 - `marketing/developer-homepage-followers-compound-across-releases` — link every game to one Developer Homepage; its followers get release emails (medium)
 - `marketing/short-form-video-is-primary-free-channel` — TikTok/Shorts/Reels are the main free channel and the hook test (medium)
+- `marketing/next-fest-registration-needs-coming-soon-page-live` — Next Fest requires the page public as Coming Soon *at registration*; submit the store page ~3 weeks before the deadline (medium-high)
