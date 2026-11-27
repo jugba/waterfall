@@ -6,6 +6,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `process/ask-user-via-input-dialogs` — ask for input through dialogs, never plain chat (high)
 - `process/memory-files-named-by-topic` — one memory per file, named `<area>/<topic-slug>.md` (high)
 - `process/delegate-to-subagents-keep-main-context` — main session orchestrates; research, data, drafting and implementation go to parallel subagents (high)
+- `process/parallel-subagents-burn-usage-limit` — 4–5 heavy parallel agents can hit the 5-hour limit; resume via SendMessage, cap at 2–3 (medium)
 - `process/steam-review-lead-time-three-weeks` — submit Steam build ≥4 weeks before launch; reviews take up to 12 business days (high)
 - `process/steam-direct-fee-pay-two-games-ahead` — pay each $100 Steam Direct fee ≥30 days ahead; pay for game N+2 when N launches (medium)
 
