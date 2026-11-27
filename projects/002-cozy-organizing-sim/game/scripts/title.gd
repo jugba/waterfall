@@ -1,7 +1,8 @@
 extends Control
-## Title screen: Play / Settings / Quit. The first button takes focus so controllers work at once.
+## Title screen: Play (-> job select) / Settings / Quit. The first button takes focus so
+## controllers work at once.
 
-const GAME_SCENE := "res://scenes/game.tscn"
+const JOBS_SCENE := "res://scenes/job_select.tscn"
 
 @onready var _menu: Control = %Menu
 @onready var _settings_menu: Control = %SettingsMenu
@@ -15,10 +16,11 @@ func _ready() -> void:
 	%Version.text = "v%s" % ProjectSettings.get_setting("application/config/version", "0")
 	_settings_menu.closed.connect(_on_settings_closed)
 	%Play.grab_focus()
+	Sfx.play_music("menu")
 
 
 func _on_play() -> void:
-	SceneChanger.change_to(GAME_SCENE)
+	SceneChanger.change_to(JOBS_SCENE)
 
 
 func _on_settings() -> void:

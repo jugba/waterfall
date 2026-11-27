@@ -109,3 +109,9 @@ Outcome: All 4 subagents (store page, art, polish, game 003) had stopped on the 
 
 Outcome: Gave Open Anyway / xattr steps; added the warning text to PLAYTEST.md; memory
 `tech/macos-gatekeeper-unnotarized-builds-need-open-anyway`. Game 003 dialog went unanswered (pending).
+
+## Prompt 16
+> It opened, playing it now, its is not an enjoyable game at all, what are the options for other games we can make?
+
+Outcome: Go/no-go = NO-GO for Knolling Co. Stopped the polish agent; asked what wasn't fun and
+which direction to take instead.

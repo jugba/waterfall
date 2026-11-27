@@ -1,4 +1,24 @@
-[gd_resource type="Theme" format=3]
+[gd_resource type="Theme" load_steps=2 format=3]
+
+[sub_resource type="StyleBoxFlat" id="focus"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.949, 0.812, 0.29, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
 
 [resource]
 default_font_size = 28
+Button/styles/focus = SubResource("focus")
+CheckButton/styles/focus = SubResource("focus")
+HSlider/styles/focus = SubResource("focus")
+OptionButton/styles/focus = SubResource("focus")

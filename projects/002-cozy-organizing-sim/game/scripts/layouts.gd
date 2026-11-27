@@ -118,3 +118,46 @@ static func fit_desk(sizes: Array[Vector2i], groups: Array, cols: int, rows: int
 	if bounds(r).size.y > rows:
 		r = shelf(sizes, cols, 1, groups, 2, 1)
 	return centred(r, cols, rows)
+
+
+## Packs footprints into a cols x rows container: biggest first, each at the first free cell in
+## reading order, trying it as given (long axis horizontal) and then turned 90 deg. `occupied`
+## cells are already taken. Returns one Rect2i per size (same order; a rect whose size is
+## swapped means "turned"), or an empty array if something does not fit.
+static func pack_into(sizes: Array[Vector2i], cols: int, rows: int, occupied: Array[Rect2i] = []) -> Array[Rect2i]:
+	var order: Array = range(sizes.size())
+	order.sort_custom(func(a, b):
+		var sa: Vector2i = sizes[a]
+		var sb: Vector2i = sizes[b]
+		if sa.x * sa.y != sb.x * sb.y:
+			return sa.x * sa.y > sb.x * sb.y
+		return maxi(sa.x, sa.y) > maxi(sb.x, sb.y))
+	var taken: Array[Rect2i] = occupied.duplicate()
+	var out: Array[Rect2i] = []
+	out.resize(sizes.size())
+	for i in order:
+		var s: Vector2i = sizes[i]
+		var found := false
+		for y in rows:
+			for x in cols:
+				for size in [s, Vector2i(s.y, s.x)]:
+					var r := Rect2i(Vector2i(x, y), size)
+					if r.end.x > cols or r.end.y > rows:
+						continue
+					var free := true
+					for t in taken:
+						if t.intersects(r):
+							free = false
+							break
+					if free:
+						out[i] = r
+						taken.append(r)
+						found = true
+						break
+				if found:
+					break
+			if found:
+				break
+		if not found:
+			return []
+	return out

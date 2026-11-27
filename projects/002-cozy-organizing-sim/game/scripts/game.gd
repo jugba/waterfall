@@ -1,11 +1,12 @@
 extends Node2D
 ## Knolling Co. greybox job: intro -> tip (items scatter) -> sort (drag, snap, rotate) ->
-## photo (neatness score reveal) -> pack back (stub: auto-pack animation) -> payday.
+## photo (neatness score reveal) -> pack back (drag every item into the container's grid,
+## it zips shut when full; "pack the rest" or Settings "Skip packing" do it automatically) -> payday.
 ##
 ## Mouse: drag items, right-click / wheel rotates. Controller: stick moves a cursor, A grabs /
 ## drops, d-pad jumps between items (or nudges the held item one cell), LB/RB rotate, Y photo.
 ## Keyboard: WASD/arrows like the d-pad, Space grab/drop, Q/E/R rotate, Enter/F photo.
-## Progress (next job, best scores, money) is kept in SaveGame slot 0.
+## Progress (best scores, completed jobs, money) is kept in SaveGame slot 0 via Progress.
 
 signal phase_changed(new_phase: int)
 
@@ -13,6 +14,7 @@ enum Phase { INTRO, TIPPING, SORTING, REVEAL, PACKING, DONE }
 
 const SAVE_SLOT := 0
 const TITLE_SCENE := "res://scenes/title.tscn"
+const JOBS_SCENE := "res://scenes/job_select.tscn"
 const CURSOR_SPEED := 900.0
 const STICK_DEADZONE := 0.22
 const PARK_POS := Vector2(1168, 660)
@@ -20,8 +22,12 @@ const PARK_SCALE := 0.42
 const TIP_POS := Vector2(544, 420)
 const PHOTO_ZOOM := 0.76
 const PHOTO_CAM := Vector2(848, 440)
-const HINT_MOUSE := "Drag to sort    Right-click / wheel: rotate    Enter: snap photo"
-const HINT_PAD := "Stick: move   A: grab/drop   D-pad: jump/nudge   LB/RB: rotate   Y: photo"
+const PACK_GAP := 3   ## cells between the desk mat and the open container in the pack phase
+const HINT_MOUSE := "Drag: sort     Right-click / wheel: turn     Enter: photo"
+const HINT_PAD := "Stick: move   A: grab   D-pad: jump   LB/RB: turn   Y: photo"
+const HINT_PACK_MOUSE := "Drag it all in     Right-click: turn     Enter: pack the rest"
+const HINT_PACK_PAD := "Stick: move   A: grab   D-pad: jump   LB/RB: turn   Y: pack rest"
+const HINTS := [HINT_MOUSE, HINT_PAD, HINT_PACK_MOUSE, HINT_PACK_PAD]
 
 ## -1 = randomise the tip each time; tests and the capture set a fixed seed.
 @export var rng_seed := -1
@@ -49,6 +55,10 @@ var _tip_time := 0.0
 var _puffs: Array[CPUParticles2D] = []
 var _next_puff := 0
 var _autoplay := false
+var _pack_time := 0.0
+var _pack_seconds := -1.0
+var _pack_auto := false
+var _closing := false   ## pack phase: auto-packing or zipping shut; input is ignored
 
 @onready var desk: Desk = $Desk
 @onready var items_root: Node2D = $Items
@@ -76,14 +86,21 @@ func _ready() -> void:
 		_puffs.append(p)
 	hud.start_pressed.connect(begin_tip)
 	hud.photo_pressed.connect(take_photo)
-	hud.pack_pressed.connect(func(): pack_back())
+	hud.pack_pressed.connect(func(): start_packing(Settings.auto_pack))
+	hud.pack_rest_pressed.connect(func(): pack_rest())
 	hud.next_pressed.connect(func(): start_job(job_index + 1))
 	hud.retry_pressed.connect(func(): start_job(job_index))
-	hud.title_pressed.connect(func(): SceneChanger.change_to(TITLE_SCENE))
+	hud.title_pressed.connect(func(): SceneChanger.change_to(JOBS_SCENE))
 	cursor_node.draw.connect(_draw_cursor)
-	progress = SaveGame.load_slot(SAVE_SLOT)
-	var first := start_job_index if start_job_index >= 0 else int(progress.get("next_job", 0))
+	progress = Progress.load_progress()
+	var first := start_job_index
+	if first < 0 and Progress.pending_job >= 0:
+		first = Progress.pending_job
+	Progress.pending_job = -1
+	if first < 0:
+		first = Progress.suggested_job(progress)
 	start_job(first)
+	Sfx.play_music("desk")
 	if _autoplay:
 		_run_autoplay()
 
@@ -99,6 +116,9 @@ func start_job(index: int) -> void:
 	_held = null
 	_hovered = null
 	_pour.clear()
+	_closing = false
+	_pack_seconds = -1.0
+	hud.hide_item_tip()
 	last_result = {}
 	camera.zoom = Vector2.ONE
 	camera.position = Vector2(640, 400)
@@ -181,7 +201,7 @@ func _end_tip(instant := false) -> void:
 		t.tween_property(container_box, "scale", Vector2.ONE * PARK_SCALE, 0.45)
 		t.tween_property(container_box, "rotation", 0.0, 0.45)
 	hud.show_sorting()
-	hud.set_hint(HINT_PAD if _pad_mode else HINT_MOUSE)
+	_refresh_hint()
 	_update_live_score()
 
 
@@ -224,68 +244,214 @@ func take_photo() -> Dictionary:
 	return last_result
 
 
-## Pack-back phase. STUB for the greybox: items fly back into the container by themselves;
-## the real packing puzzle (rotate, fit, close the lid) is week 2.
-func pack_back(instant := false) -> void:
+## Pack-back phase: the container opens next to the desk showing its grid; the player drags
+## every item in (same grab / turn / snap as sorting). When the last one fits it zips shut.
+## `auto` packs everything by itself (Settings "Skip packing"); `instant` finishes at once (tests).
+func start_packing(auto := false, instant := false) -> void:
 	if phase != Phase.REVEAL:
 		return
 	_set_phase(Phase.PACKING)
-	var earned := int(progress.get("money", 0))
+	_closing = false
+	_pack_time = 0.0
+	_pack_auto = auto
+	_set_hover(null)
+	for it in items:
+		it.packed = false
+		if not it.placed:
+			place(it, it.snapped_angle(), true)
+	container_box.interior = true
+	container_box.zip = 0.0
+	container_box.lid = 1.0
+	var centre := pack_rect_px().get_center()
+	var area := Desk.rect_px().merge(pack_rect_px()).grow(Desk.CELL)
+	var zoom := minf(1240.0 / area.size.x, 580.0 / area.size.y)
+	if instant:
+		container_box.position = centre
+		container_box.scale = Vector2.ONE
+		container_box.rotation = 0.0
+		camera.zoom = Vector2.ONE * zoom
+		camera.position = area.get_center()
+		pack_rest(true)
+		return
+	hud.show_packing(container_box.label)
+	_refresh_hint()
+	_update_pack_status()
+	var cam := camera.create_tween().set_parallel()
+	cam.tween_property(camera, "zoom", Vector2.ONE * zoom, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	cam.tween_property(camera, "position", area.get_center(), 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	container_box.scale = Vector2.ONE * 0.6
+	var box := container_box.create_tween().set_parallel()
+	box.tween_property(container_box, "position", centre, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	box.tween_property(container_box, "scale", Vector2.ONE, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	box.tween_property(container_box, "rotation", 0.0, 0.3)
+	Audio.play_sfx(Sfx.get_stream("thunk"), -8.0, 0.03, 1.4)
+	if auto:
+		_closing = true
+		await box.finished
+		_closing = false
+		pack_rest()
+
+
+## Old name kept for tests / autoplay: packs automatically (instant = no animation).
+func pack_back(instant := false) -> void:
+	start_packing(true, instant)
+
+
+## The container's interior grid, in desk-cell coordinates (it sits right of the mat, on the
+## same 32 px lattice, so the desk's ghost / snap maths work unchanged).
+func pack_rect() -> Rect2i:
+	var c := container_box.cells
+	return Rect2i(Vector2i(Desk.COLS + PACK_GAP, maxi(0, (Desk.ROWS - c.y) / 2)), c)
+
+
+func pack_rect_px() -> Rect2:
+	var r := pack_rect()
+	return Rect2(Desk.cell_to_px(Vector2(r.position)), Vector2(r.size) * Desk.CELL)
+
+
+func packed_count() -> int:
+	var n := 0
+	for it in items:
+		n += 1 if it.packed else 0
+	return n
+
+
+func over_bag(world: Vector2) -> bool:
+	return phase == Phase.PACKING and pack_rect_px().grow(Desk.CELL).has_point(world)
+
+
+## Packs every item not yet in the container into the free space (or repacks everything if
+## the player's layout leaves no room), then zips it shut.
+func pack_rest(instant := false) -> void:
+	if phase != Phase.PACKING or _closing:
+		return
+	if _held:
+		drop_held(true)
+	var rect := pack_rect()
+	var movers: Array[DeskItem] = []
+	var occupied: Array[Rect2i] = []
+	for it in items:
+		if it.packed:
+			occupied.append(Rect2i(it.cell - rect.position, it.grid_size()))
+		else:
+			movers.append(it)
+	var fit := Layouts.pack_into(_sizes_of(movers), rect.size.x, rect.size.y, occupied)
+	if fit.is_empty() and not movers.is_empty():
+		movers = items.duplicate()
+		fit = Layouts.pack_into(_sizes_of(movers), rect.size.x, rect.size.y)
+	if fit.size() != movers.size():
+		_close_bag(instant)  # data error (container too small): never block the player
+		return
+	_closing = true
+	_set_hover(null)
+	var last: Tween
+	for k in movers.size():
+		var it: DeskItem = movers[k]
+		var r: Rect2i = fit[k]
+		var angle := 0.0 if r.size == it.base_size else PI / 2.0
+		it.cell = rect.position + r.position
+		it.placed = true
+		it.packed = true
+		var target := Desk.centre_of(it.cell, r.size)
+		if instant:
+			it.stop_motion()
+			it.position = target
+			it.rotation = angle
+			it.lift = 0.0
+			continue
+		var t := it.motion()
+		t.tween_interval(k * 0.05)
+		t.tween_property(it, "lift", 1.0, 0.06)
+		t.tween_property(it, "position", target, 0.22).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		t.parallel().tween_property(it, "rotation", angle, 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		t.tween_property(it, "lift", 0.0, 0.06)
+		t.tween_callback(func():
+			Audio.play_sfx(Sfx.get_stream("pack_drop"), -4.0, 0.06, 0.9 + k * 0.02)
+			_update_pack_status())
+		last = t
+	if instant or last == null:
+		_close_bag(instant)
+		return
+	await last.finished
+	_close_bag()
+
+
+func _sizes_of(list: Array[DeskItem]) -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	for it in list:
+		out.append(it.base_size)
+	return out
+
+
+func _check_packed() -> void:
+	if phase == Phase.PACKING and not _closing and packed_count() == items.size():
+		_close_bag()
+
+
+## The satisfying bit: the zip runs across, items vanish under the flap, the bag pops.
+func _close_bag(instant := false) -> void:
+	_closing = true
+	_pack_seconds = -1.0 if _pack_auto else _pack_time
+	desk.hide_ghost()
+	_set_hover(null)
+	hud.hide_item_tip()
 	if instant:
 		for it in items:
 			it.visible = false
-		_finish_pack(earned)
+		container_box.zip = 1.0
+		_finish_pack()
 		return
-	var cam := camera.create_tween().set_parallel()
-	cam.tween_property(camera, "zoom", Vector2.ONE, 0.35)
-	cam.tween_property(camera, "position", Vector2(640, 400), 0.35)
-	var box := container_box.create_tween().set_parallel()
-	box.tween_property(container_box, "position", TIP_POS, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	box.tween_property(container_box, "scale", Vector2.ONE, 0.4)
-	box.tween_property(container_box, "lid", 1.0, 0.3)
-	await box.finished
-	var order := items.duplicate()
-	order.sort_custom(func(a, b): return a.position.y * 4 + a.position.x < b.position.y * 4 + b.position.x)
-	var last: Tween
-	for k in order.size():
-		var it: DeskItem = order[k]
-		var t := it.motion()
-		t.tween_interval(k * 0.06)
-		t.tween_property(it, "lift", 1.0, 0.08)
-		t.tween_property(it, "position", TIP_POS + Vector2(_rng.randf_range(-30, 30), _rng.randf_range(-12, 12)), 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-		t.parallel().tween_property(it, "scale", Vector2(0.35, 0.35), 0.28).set_ease(Tween.EASE_IN)
-		t.tween_callback(func():
+	Audio.play_sfx(Sfx.get_stream("zip"), -2.0, 0.04)
+	var t := container_box.create_tween()
+	t.tween_property(container_box, "zip", 1.0, 0.55).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.tween_callback(func():
+		for it in items:
 			it.visible = false
-			Audio.play_sfx(Sfx.get_stream("click"), -6.0, 0.02, 0.8 + k * 0.03))
-		last = t
-	if last:
-		await last.finished
-	var close := container_box.create_tween()
-	close.tween_property(container_box, "lid", 0.0, 0.14).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	close.tween_callback(func():
 		_shake = 7.0
 		Audio.play_sfx(Sfx.get_stream("thunk"), -2.0, 0.0, 1.3))
-	close.tween_property(container_box, "scale", Vector2(1.1, 0.92), 0.06)
-	close.tween_property(container_box, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-	await close.finished
-	_finish_pack(earned)
+	t.tween_property(container_box, "scale", Vector2(1.07, 0.93), 0.06)
+	t.tween_property(container_box, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	await t.finished
+	_finish_pack()
 
 
-func _finish_pack(earned: int) -> void:
-	earned += last_pay
+func _finish_pack() -> void:
+	if phase != Phase.PACKING:
+		return
+	var earned := int(progress.get("money", 0)) + last_pay
 	progress["money"] = earned
-	progress["next_job"] = (job_index + 1) % maxi(1, Catalog.job_count())
-	SaveGame.save_slot(SAVE_SLOT, progress)
+	var newly := Progress.mark_completed(progress, job_index)
+	Progress.save(progress)
 	_set_phase(Phase.DONE)
-	hud.show_payday(last_pay, earned, job_index + 1 < Catalog.job_count())
+	hud.set_hint("")
+	var unlocked := ""
+	if newly >= 0:
+		unlocked = String(Catalog.job(newly).get("title", ""))
+		Audio.play_sfx(Sfx.get_stream("unlock"), -4.0, 0.0)
+	var cam := camera.create_tween().set_parallel()
+	cam.tween_property(camera, "zoom", Vector2.ONE * PHOTO_ZOOM, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	cam.tween_property(camera, "position", PHOTO_CAM, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	hud.show_payday(last_pay, earned, job_index + 1 < Catalog.job_count(), _pack_seconds, unlocked)
+
+
+func _update_pack_status() -> void:
+	hud.set_pack_status(packed_count(), items.size(), _pack_time)
 
 
 func _record_result() -> void:
-	var best: Dictionary = progress.get("best", {})
-	var id := String(job.get("id", ""))
-	best[id] = maxi(int(best.get(id, 0)), int(last_result["total"]))
-	progress["best"] = best
-	SaveGame.save_slot(SAVE_SLOT, progress)
+	Progress.record_best(progress, job_index, int(last_result["total"]))
+	Progress.save(progress)
+
+
+func _interactive() -> bool:
+	return phase == Phase.SORTING or (phase == Phase.PACKING and not _closing)
+
+
+func _refresh_hint() -> void:
+	if phase == Phase.SORTING:
+		hud.set_hint(HINT_PAD if _pad_mode else HINT_MOUSE)
+	elif phase == Phase.PACKING:
+		hud.set_hint(HINT_PACK_PAD if _pad_mode else HINT_PACK_MOUSE)
 
 
 func _set_phase(p: Phase) -> void:
@@ -323,11 +489,12 @@ func item_at(world: Vector2) -> DeskItem:
 
 
 func grab(it: DeskItem, world: Vector2) -> void:
-	if it == null or phase != Phase.SORTING or _held:
+	if it == null or not _interactive() or _held:
 		return
 	_held = it
 	it.held = true
 	it.placed = false
+	it.packed = false
 	it.velocity = Vector2.ZERO
 	it.spin = 0.0
 	_grab_offset = Vector2.ZERO if _pad_mode else (it.position - world)
@@ -354,9 +521,11 @@ func drop_held(instant := false) -> void:
 func place(it: DeskItem, angle: float, instant := false) -> void:
 	var q := posmod(roundi(angle / (PI / 2.0)), 4)
 	var size := it.grid_size(q)
-	var cell := resolve_cell(it, it.position, size)
+	var land := landing(it, it.position, size)
+	var cell: Vector2i = land[0]
 	it.cell = cell
 	it.placed = true
+	it.packed = land[1]
 	var target := Desk.centre_of(cell, size)
 	var g := _guides(Rect2i(cell, size), it)
 	var aligned: bool = not g[0].is_empty() or not g[1].is_empty()
@@ -380,7 +549,10 @@ func _after_snap(it: DeskItem, juicy: bool, aligned: bool) -> void:
 	_bump_loose_from(it)
 	if juicy:
 		var area := it.base_size.x * it.base_size.y
-		Audio.play_sfx(Sfx.get_stream("click"), 0.0, 0.04, clampf(1.3 - area * 0.05, 0.75, 1.3))
+		if it.packed:
+			Audio.play_sfx(Sfx.get_stream("pack_drop"), -2.0, 0.06, clampf(1.2 - area * 0.04, 0.75, 1.2))
+		else:
+			Audio.play_sfx(Sfx.get_stream("click"), 0.0, 0.04, clampf(1.3 - area * 0.05, 0.75, 1.3))
 		if aligned:  # second, higher click when it lines up with a neighbour
 			Audio.play_sfx(Sfx.get_stream("tick"), -5.0, 0.02, 1.25)
 		var sq := it.create_tween()
@@ -390,10 +562,13 @@ func _after_snap(it: DeskItem, juicy: bool, aligned: bool) -> void:
 		_shake = maxf(_shake, 1.5)
 	if phase == Phase.SORTING:
 		_update_live_score()
+	elif phase == Phase.PACKING:
+		_update_pack_status()
+		_check_packed()
 
 
 func rotate_item(it: DeskItem, dir: int) -> void:
-	if it == null or phase != Phase.SORTING:
+	if it == null or not _interactive():
 		return
 	var angle := it.snapped_angle() + dir * PI / 2.0
 	Audio.play_sfx(Sfx.get_stream("tick"), -3.0, 0.05, 0.9)
@@ -403,17 +578,32 @@ func rotate_item(it: DeskItem, dir: int) -> void:
 		place(it, angle)
 
 
-## Nearest free top-left cell for an item of `size` near world position `centre`.
-func resolve_cell(it: DeskItem, centre: Vector2, size: Vector2i) -> Vector2i:
+## Where a drop at `centre` lands: [top-left cell, in the container?]. In the pack phase a drop
+## over the open container goes into its grid; if it doesn't fit there it goes back on the desk.
+func landing(it: DeskItem, centre: Vector2, size: Vector2i) -> Array:
+	if over_bag(centre):
+		var c := resolve_cell(it, centre, size, true)
+		if c.x >= 0:
+			return [c, true]
+	return [resolve_cell(it, centre, size, false), false]
+
+
+## Nearest free top-left cell for an item of `size` near world position `centre`, on the desk
+## or (in_bag) inside the container grid. In the container, (-1, -1) means it doesn't fit.
+func resolve_cell(it: DeskItem, centre: Vector2, size: Vector2i, in_bag := false) -> Vector2i:
+	var bounds := pack_rect() if in_bag else Rect2i(0, 0, Desk.COLS, Desk.ROWS)
+	var none := Vector2i(-1, -1)
+	if in_bag and (size.x > bounds.size.x or size.y > bounds.size.y):
+		return none
 	var want_f := Desk.px_to_cell(centre) - Vector2(size) * 0.5
 	var want := Vector2i(roundi(want_f.x), roundi(want_f.y))
-	want.x = clampi(want.x, 0, Desk.COLS - size.x)
-	want.y = clampi(want.y, 0, Desk.ROWS - size.y)
+	want.x = clampi(want.x, bounds.position.x, bounds.end.x - size.x)
+	want.y = clampi(want.y, bounds.position.y, bounds.end.y - size.y)
 	var blocked: Array[Rect2i] = []
 	for other in items:
-		if other != it and other.placed and other.visible:
+		if other != it and other.placed and other.visible and other.packed == in_bag:
 			blocked.append(Rect2i(other.cell, other.grid_size()))
-	for r in maxi(Desk.COLS, Desk.ROWS):
+	for r in maxi(bounds.size.x, bounds.size.y):
 		var best := Vector2i(-1, -1)
 		var best_d := INF
 		for dy in range(-r, r + 1):
@@ -422,7 +612,7 @@ func resolve_cell(it: DeskItem, centre: Vector2, size: Vector2i) -> Vector2i:
 					continue
 				var c := want + Vector2i(dx, dy)
 				var rect := Rect2i(c, size)
-				if not Desk.in_bounds(rect) or _hits(rect, blocked):
+				if not bounds.encloses(rect) or _hits(rect, blocked):
 					continue
 				var d := (Vector2(c) - want_f).length_squared()
 				if d < best_d:
@@ -430,7 +620,7 @@ func resolve_cell(it: DeskItem, centre: Vector2, size: Vector2i) -> Vector2i:
 					best = c
 		if best.x >= 0:
 			return best
-	return want
+	return none if in_bag else want
 
 
 func _hits(r: Rect2i, blocked: Array[Rect2i]) -> bool:
@@ -445,6 +635,8 @@ func _hits(r: Rect2i, blocked: Array[Rect2i]) -> bool:
 func _guides(r: Rect2i, ignore: DeskItem) -> Array:
 	var gx: Array[float] = []
 	var gy: Array[float] = []
+	if phase != Phase.SORTING:
+		return [gx, gy]
 	var mine_x := [float(r.position.x), float(r.end.x), r.position.x + r.size.x * 0.5]
 	var mine_y := [float(r.position.y), float(r.end.y), r.position.y + r.size.y * 0.5]
 	for other in items:
@@ -508,7 +700,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		begin_tip()
 		return
-	if phase != Phase.SORTING:
+	if not _interactive():
 		return
 	if event is InputEventMouseMotion:
 		_set_pad_mode(false)
@@ -532,7 +724,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			handled = false
 	elif event.is_action_pressed(&"finish_job"):
-		take_photo()
+		if phase == Phase.SORTING:
+			take_photo()
+		else:
+			pack_rest()
 	elif event.is_action_pressed(&"rotate_cw"):
 		rotate_item(_held if _held else _hovered, 1)
 	elif event.is_action_pressed(&"rotate_ccw"):
@@ -568,7 +763,7 @@ func _dir_of(action: StringName) -> Vector2i:
 func _step(dir: Vector2i) -> void:
 	if _held:
 		_cursor += Vector2(dir) * Desk.CELL
-		_cursor = _cursor.clamp(Desk.ORIGIN, Desk.ORIGIN + Desk.SIZE)
+		_cursor = _clamp_cursor(_cursor)
 		Audio.play_sfx(Sfx.get_stream("tick"), -12.0, 0.05)
 		return
 	var best: DeskItem
@@ -595,9 +790,15 @@ func _set_pad_mode(on: bool) -> void:
 	if _pad_mode == on:
 		return
 	_pad_mode = on
-	if phase == Phase.SORTING:
-		hud.set_hint(HINT_PAD if on else HINT_MOUSE)
+	_refresh_hint()
 	cursor_node.queue_redraw()
+
+
+func _clamp_cursor(p: Vector2) -> Vector2:
+	var r := Desk.rect_px()
+	if phase == Phase.PACKING:
+		r = r.merge(pack_rect_px())
+	return p.clamp(r.position, r.end)
 
 
 func _set_hover(it: DeskItem) -> void:
@@ -617,8 +818,18 @@ func _process(delta: float) -> void:
 	if not _pad_mode:
 		_cursor = get_global_mouse_position()
 	cursor_node.position = _cursor
-	cursor_node.visible = _pad_mode and phase == Phase.SORTING
-	if phase == Phase.SORTING:
+	cursor_node.visible = _pad_mode and _interactive()
+	if phase == Phase.PACKING and not _closing:
+		var before_s := int(_pack_time)
+		_pack_time += delta
+		if int(_pack_time) != before_s:
+			_update_pack_status()
+	if _closing and container_box.zip > 0.0:
+		var edge := container_box.zip_edge_x()
+		for it in items:
+			if it.packed and it.visible and it.position.x < edge:
+				it.visible = false
+	if _interactive():
 		if _held:
 			var target := _cursor + _grab_offset
 			var before := _held.position
@@ -626,19 +837,30 @@ func _process(delta: float) -> void:
 			var vx := (_held.position.x - before.x) / maxf(delta, 0.001)
 			_held.tilt = lerpf(_held.tilt, clampf(vx * 0.0004, -0.22, 0.22), 1.0 - exp(-12.0 * delta))
 			var size := _held.grid_size()
-			var cell := resolve_cell(_held, _held.position, size)
+			var cell: Vector2i = landing(_held, _held.position, size)[0]
 			var g := _guides(Rect2i(cell, size), _held)
 			desk.show_ghost(Rect2i(cell, size), g[0], g[1])
 		elif not _pad_mode:
 			_set_hover(item_at(_cursor))
 		elif _hovered and _hovered.position.distance_to(_cursor) > 6.0:
 			_set_hover(item_at(_cursor))
+	_update_item_tip()
 	_shake = move_toward(_shake * exp(-7.0 * delta), 0.0, delta)
 	camera.offset = Vector2(_rng.randf_range(-1, 1), _rng.randf_range(-1, 1)) * _shake
 
 
+## Item name in the HUD (>= 28 px on screen) above the held or hovered item.
+func _update_item_tip() -> void:
+	var it := _held if _held else _hovered
+	if it == null or not _interactive() or not it.visible:
+		hud.hide_item_tip()
+		return
+	var top := it.position - Vector2(0, it.half_extents().y + 4.0 + 10.0 * it.lift)
+	hud.show_item_tip(it.display_name(), get_viewport().get_canvas_transform() * top)
+
+
 func _read_stick(delta: float) -> void:
-	if phase != Phase.SORTING:
+	if not _interactive():
 		return
 	var v := Vector2.ZERO
 	for d in Input.get_connected_joypads():
@@ -649,7 +871,7 @@ func _read_stick(delta: float) -> void:
 		return
 	_set_pad_mode(true)
 	v = v.normalized() * inverse_lerp(STICK_DEADZONE, 1.0, minf(v.length(), 1.0))
-	_cursor = (_cursor + v * v.length() * CURSOR_SPEED * delta).clamp(Desk.ORIGIN, Desk.ORIGIN + Desk.SIZE)
+	_cursor = _clamp_cursor(_cursor + v * v.length() * CURSOR_SPEED * delta)
 
 
 func _physics_process(delta: float) -> void:

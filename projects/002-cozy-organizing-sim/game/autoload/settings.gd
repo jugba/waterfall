@@ -2,6 +2,7 @@ extends Node
 ## Player settings: bus volumes, display mode and input rebinding, saved to user://settings.cfg.
 ##
 ## Usage: Settings.set_volume("Music", 0.5); Settings.set_fullscreen(true); Settings.save_settings()
+## Gameplay: Settings.auto_pack skips the interactive pack-back phase.
 ## Rebinding: Settings.rebind(&"move_left", event) replaces the binding of the same device kind
 ## (keyboard vs controller), so remapping the keyboard never breaks the controller.
 ## Bindings are stored as plain dictionaries, never as serialized Objects, so a tampered
@@ -22,6 +23,8 @@ var path := DEFAULT_PATH
 var volumes: Dictionary = DEFAULT_VOLUMES.duplicate()
 var fullscreen := false
 var vsync := true
+## Gameplay: skip the interactive pack-back puzzle (items pack themselves and the bag zips shut).
+var auto_pack := false
 
 var _default_events: Dictionary = {}  # StringName -> Array[InputEvent]
 
@@ -75,6 +78,13 @@ func _apply_display() -> void:
 		DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
 	DisplayServer.window_set_vsync_mode(
 		DisplayServer.VSYNC_ENABLED if vsync else DisplayServer.VSYNC_DISABLED)
+
+
+# --- gameplay ----------------------------------------------------------------
+
+func set_auto_pack(on: bool) -> void:
+	auto_pack = on
+	changed.emit()
 
 
 # --- input -------------------------------------------------------------------
@@ -166,6 +176,7 @@ func save_settings() -> Error:
 		cfg.set_value("audio", bus, volumes.get(bus, 1.0))
 	cfg.set_value("display", "fullscreen", fullscreen)
 	cfg.set_value("display", "vsync", vsync)
+	cfg.set_value("gameplay", "auto_pack", auto_pack)
 	for action in REBINDABLE_ACTIONS:
 		var list: Array = []
 		for e in InputMap.action_get_events(action):
@@ -181,6 +192,7 @@ func load_settings() -> void:
 	volumes = DEFAULT_VOLUMES.duplicate()
 	fullscreen = false
 	vsync = true
+	auto_pack = false
 	reset_bindings()
 	var cfg := ConfigFile.new()
 	if cfg.load(path) == OK:
@@ -188,6 +200,7 @@ func load_settings() -> void:
 			volumes[bus] = clampf(float(cfg.get_value("audio", bus, volumes.get(bus, 1.0))), 0.0, 1.0)
 		fullscreen = bool(cfg.get_value("display", "fullscreen", false))
 		vsync = bool(cfg.get_value("display", "vsync", true))
+		auto_pack = bool(cfg.get_value("gameplay", "auto_pack", false))
 		for action in REBINDABLE_ACTIONS:
 			var list = cfg.get_value("input", String(action), null)
 			if list is Array and not list.is_empty():

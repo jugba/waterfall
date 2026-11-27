@@ -70,7 +70,8 @@ func test_job_loads_and_completes() -> void:
 		g.pack_back(true)
 		assert_eq(g.phase, Game.Phase.DONE)
 		var save := SaveGame.load_slot(0)
-		assert_eq(int(save.get("next_job", -1)), (job + 1) % 3)
+		assert_eq(int(save.get("next_job", -1)), mini(job + 1, 2))
+		assert_true(save["completed"].has(g.job["id"]), "job %d marked completed" % job)
 		assert_eq(int(save["best"][g.job["id"]]), int(result["total"]))
 		g.free()
 

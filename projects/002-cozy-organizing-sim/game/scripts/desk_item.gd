@@ -1,6 +1,9 @@
 class_name DeskItem
 extends Node2D
-## One item on the desk, drawn as greybox art: a coloured rounded rectangle with its name.
+## One item on the desk. Drawn from its optional "sprite" (items.json, a res:// texture path,
+## see projects/002-cozy-organizing-sim/art/style-guide.md: footprint x 64 px per cell) or, when
+## there is none or it is missing, as a greybox coloured rounded rectangle. The item's name is
+## not drawn on it (too small to read on a Deck); the HUD shows it on hover / hold.
 ## `rotation` is the item's real orientation (used for scoring); `tilt`, `lift` and `squash`
 ## are visual-only juice applied in _draw (drag wobble, raised shadow, landing squash).
 
@@ -11,6 +14,7 @@ var data: Dictionary = {}
 var base_size := Vector2i(1, 1)   ## cells at rotation 0 (w >= h)
 var held := false
 var placed := false               ## snapped onto the grid (an obstacle for other drops)
+var packed := false               ## pack-back phase: placed inside the container's grid
 var cell := Vector2i.ZERO         ## top-left grid cell while placed
 var velocity := Vector2.ZERO      ## loose-item physics (tip scatter, being bumped)
 var spin := 0.0
@@ -35,7 +39,7 @@ var hover := false:
 
 var _motion: Tween
 var _colour := Color.WHITE
-var _font_size := 14
+var _sprite: Texture2D
 var _body := StyleBoxFlat.new()
 var _shadow := StyleBoxFlat.new()
 var _outline := StyleBoxFlat.new()
@@ -56,8 +60,24 @@ func setup(item_data: Dictionary) -> void:
 	_outline.border_color = Color(1, 1, 1, 0.9)
 	_outline.set_border_width_all(3)
 	_outline.set_corner_radius_all(CORNER + 2)
-	_fit_font()
+	_sprite = load_sprite(data)
 	queue_redraw()
+
+
+## The item's sprite texture, or null to fall back to the greybox rectangle.
+static func load_sprite(d: Dictionary) -> Texture2D:
+	var path := String(d.get("sprite", ""))
+	if path.is_empty() or not ResourceLoader.exists(path):
+		return null
+	return load(path) as Texture2D
+
+
+func has_sprite() -> bool:
+	return _sprite != null
+
+
+func display_name() -> String:
+	return String(data.get("name", ""))
 
 
 ## The item's one movement tween. Starting a new move kills the previous one, so a grab,
@@ -123,32 +143,27 @@ func score_entry() -> Dictionary:
 	return Neatness.entry(Rect2(centre - size * 0.5, size), rad_to_deg(rotation), category(), colour_name())
 
 
-func _fit_font() -> void:
-	var font := ThemeDB.fallback_font
-	var text := String(data.get("name", ""))
-	var avail := size_px().x - 10.0
-	_font_size = 16
-	while _font_size > 9 and font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, _font_size).x > avail:
-		_font_size -= 1
-
-
 func _draw() -> void:
 	var s := size_px()
 	var r := Rect2(-s * 0.5 + Vector2(INSET, INSET), s - Vector2(INSET, INSET) * 2.0)
 	var vis := Vector2.ONE * (1.0 + 0.08 * lift) * squash
 	# The shadow falls down-right on screen whatever the item's rotation.
 	var off := Vector2(3, 4).lerp(Vector2(12, 18), lift).rotated(-rotation - tilt)
-	_shadow.bg_color.a = lerpf(0.35, 0.22, lift)
-	draw_set_transform(off, tilt, vis)
-	draw_style_box(_shadow, r)
-	draw_set_transform(Vector2.ZERO, tilt, vis)
-	draw_style_box(_body, r)
-	# A highlight strip on the top edge sells "object" over "rectangle".
-	draw_rect(Rect2(r.position + Vector2(CORNER, 3), Vector2(r.size.x - CORNER * 2, 2)), Color(1, 1, 1, 0.25))
-	var font := ThemeDB.fallback_font
-	var text := String(data.get("name", ""))
-	var ink := Color("1d1f26") if _colour.get_luminance() > 0.45 else Color("f4f1ea")
-	var baseline := (font.get_ascent(_font_size) - font.get_descent(_font_size)) * 0.5
-	draw_string(font, Vector2(r.position.x, baseline), text, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, _font_size, ink)
+	var shadow_a := lerpf(0.35, 0.22, lift)
+	if _sprite:
+		# Sprites fill the whole footprint (their 2 px margin is inside the canvas).
+		var full := Rect2(-s * 0.5, s)
+		draw_set_transform(off, tilt, vis)
+		draw_texture_rect(_sprite, full, false, Color(0, 0, 0, shadow_a))
+		draw_set_transform(Vector2.ZERO, tilt, vis)
+		draw_texture_rect(_sprite, full, false)
+	else:
+		_shadow.bg_color.a = shadow_a
+		draw_set_transform(off, tilt, vis)
+		draw_style_box(_shadow, r)
+		draw_set_transform(Vector2.ZERO, tilt, vis)
+		draw_style_box(_body, r)
+		# A highlight strip on the top edge sells "object" over "rectangle".
+		draw_rect(Rect2(r.position + Vector2(CORNER, 3), Vector2(r.size.x - CORNER * 2, 2)), Color(1, 1, 1, 0.25))
 	if hover or held:
 		draw_style_box(_outline, r.grow(3))

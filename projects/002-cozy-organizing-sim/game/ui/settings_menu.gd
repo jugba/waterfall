@@ -62,6 +62,11 @@ func _build() -> void:
 	vs.button_pressed = Settings.vsync
 	vs.toggled.connect(Settings.set_vsync)
 	_add_row("V-Sync", [vs])
+	_add_header("Gameplay")
+	var ap := CheckButton.new()
+	ap.button_pressed = Settings.auto_pack
+	ap.toggled.connect(Settings.set_auto_pack)
+	_add_row("Skip packing", [ap])
 	_add_header("Controls (keyboard / controller)")
 	for action in Settings.REBINDABLE_ACTIONS:
 		var key_btn := _make_bind_button(action, false)

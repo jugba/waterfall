@@ -43,7 +43,7 @@ horizontal_alignment = 1
 [node name="Subtitle" type="Label" parent="Menu/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.81, 0.29, 1)
-text = "greybox prototype - sort the mess, snap the photo"
+text = "greybox prototype - sort it, snap it, pack it back"
 horizontal_alignment = 1
 
 [node name="Play" type="Button" parent="Menu/VBox"]
@@ -78,8 +78,8 @@ offset_right = -24.0
 offset_bottom = -16.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 20
-text = "v0.1.0"
+theme_override_font_sizes/font_size = 28
+text = "v0.2.0"
 horizontal_alignment = 2
 
 [node name="SettingsMenu" parent="." instance=ExtResource("2")]

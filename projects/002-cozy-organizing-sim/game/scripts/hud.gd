@@ -1,7 +1,9 @@
 class_name Hud
 extends CanvasLayer
 ## Job HUD, built in code: top bar, live neatness meter, client intro card, photo flash and the
-## score reveal (count-up, stamp, confetti, one line per scoring reason) and payday buttons.
+## score reveal (count-up, stamp, confetti, one line per scoring reason), the pack-back bar and
+## payday buttons, plus the item-name tooltip shown on hover / hold.
+## Readability rule (BRIEF): every text is >= MIN_FONT (28 px at 1280x800); tests scan for it.
 
 signal start_pressed
 signal photo_pressed
@@ -9,11 +11,13 @@ signal pack_pressed
 signal next_pressed
 signal retry_pressed
 signal title_pressed
+signal pack_rest_pressed
 
 const PANEL_X := 824.0
 const INK := Color("f4f1ea")
 const DIM := Color(0.96, 0.94, 0.9, 0.7)
 const ACCENT := Color("f2cf4a")
+const MIN_FONT := 28
 
 var root: Control
 var title_label: Label
@@ -33,6 +37,11 @@ var reasons_box: VBoxContainer
 var pay_label: Label
 var buttons_box: VBoxContainer
 var confetti: CPUParticles2D
+var tip_panel: PanelContainer
+var tip_label: Label
+var pack_bar: PanelContainer
+var pack_status: Label
+var pack_rest_button: Button
 
 var _meter_value := 0.0
 var _intro_client: Label
@@ -50,13 +59,15 @@ func _ready() -> void:
 	title_label.position = Vector2(32, 18)
 	title_label.size = Vector2(1000, 40)
 	root.add_child(title_label)
-	hint_label = _label(22, DIM)
+	hint_label = _label(MIN_FONT, DIM)
 	hint_label.position = Vector2(32, 66)
 	hint_label.size = Vector2(1220, 32)
 	root.add_child(hint_label)
 	_build_side()
 	_build_intro()
 	_build_panel()
+	_build_pack_bar()
+	_build_tip()
 	confetti = _make_confetti()
 	root.add_child(confetti)
 	flash_rect = ColorRect.new()
@@ -104,14 +115,14 @@ func _build_side() -> void:
 	side.size = Vector2(192, 420)
 	side.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(side)
-	var cap := _label(22, DIM, "NEATNESS")
+	var cap := _label(MIN_FONT, DIM, "NEATNESS")
 	side.add_child(cap)
 	meter_label = _label(56, INK, "0%")
-	meter_label.position = Vector2(0, 26)
+	meter_label.position = Vector2(0, 30)
 	side.add_child(meter_label)
 	var bar_bg := ColorRect.new()
 	bar_bg.color = Color(1, 1, 1, 0.12)
-	bar_bg.position = Vector2(0, 104)
+	bar_bg.position = Vector2(0, 110)
 	bar_bg.size = Vector2(192, 14)
 	bar_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	side.add_child(bar_bg)
@@ -121,12 +132,14 @@ func _build_side() -> void:
 	meter_fill.size = Vector2(0, 14)
 	meter_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	side.add_child(meter_fill)
-	loose_label = _label(22, DIM, "")
-	loose_label.position = Vector2(0, 128)
+	loose_label = _label(MIN_FONT, DIM, "")
+	loose_label.position = Vector2(0, 132)
+	loose_label.size = Vector2(192, 80)
+	loose_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	side.add_child(loose_label)
 	photo_button = _button("Snap photo", photo_pressed)
 	photo_button.focus_mode = Control.FOCUS_NONE  # controller uses the finish_job action (Y)
-	photo_button.position = Vector2(0, 176)
+	photo_button.position = Vector2(0, 220)
 	photo_button.size = Vector2(192, 64)
 	side.add_child(photo_button)
 	side.hide()
@@ -147,7 +160,9 @@ func _build_intro() -> void:
 	_intro_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_intro_note.custom_minimum_size = Vector2(640, 0)
 	v.add_child(_intro_note)
-	_intro_contents = _label(22, DIM)
+	_intro_contents = _label(MIN_FONT, DIM)
+	_intro_contents.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_intro_contents.custom_minimum_size = Vector2(640, 0)
 	v.add_child(_intro_contents)
 	intro_button = _button("Tip it out!", start_pressed)
 	v.add_child(intro_button)
@@ -180,6 +195,67 @@ func _build_panel() -> void:
 	buttons_box.add_theme_constant_override("separation", 10)
 	v.add_child(buttons_box)
 	panel.hide()
+
+
+func _build_pack_bar() -> void:
+	pack_bar = PanelContainer.new()
+	pack_bar.add_theme_stylebox_override("panel", _panel_style(0.9))
+	pack_bar.position = Vector2(32, 700)
+	pack_bar.custom_minimum_size = Vector2(1216, 0)
+	root.add_child(pack_bar)
+	var h := HBoxContainer.new()
+	h.add_theme_constant_override("separation", 24)
+	pack_bar.add_child(h)
+	pack_status = _label(MIN_FONT, INK)
+	pack_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pack_status.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	h.add_child(pack_status)
+	pack_rest_button = _button("Pack the rest for me", pack_rest_pressed)
+	pack_rest_button.focus_mode = Control.FOCUS_NONE  # controller: the finish_job action (Y)
+	pack_rest_button.custom_minimum_size = Vector2(380, 56)
+	h.add_child(pack_rest_button)
+	# Compact: shrink the panel margins so the bar stays inside the bottom 100 px.
+	var st: StyleBoxFlat = pack_bar.get_theme_stylebox("panel")
+	st.content_margin_top = 10
+	st.content_margin_bottom = 10
+	pack_bar.hide()
+
+
+func _build_tip() -> void:
+	tip_panel = PanelContainer.new()
+	var st := _panel_style(0.94)
+	st.content_margin_left = 14
+	st.content_margin_right = 14
+	st.content_margin_top = 4
+	st.content_margin_bottom = 6
+	st.shadow_size = 6
+	tip_panel.add_theme_stylebox_override("panel", st)
+	tip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tip_label = _label(MIN_FONT, INK)
+	tip_panel.add_child(tip_label)
+	root.add_child(tip_panel)
+	tip_panel.hide()
+
+
+## Item name above an item (screen position of the item's top centre). Empty text hides it.
+func show_item_tip(text: String, screen_top: Vector2) -> void:
+	if text.is_empty():
+		tip_panel.hide()
+		return
+	if tip_label.text != text:
+		tip_label.text = text
+		tip_panel.reset_size()
+	var sz := tip_panel.get_combined_minimum_size()
+	var p := screen_top - Vector2(sz.x * 0.5, sz.y + 8)
+	var vp := root.get_viewport_rect().size if root.is_inside_tree() else Vector2(1280, 800)
+	p.x = clampf(p.x, 8, vp.x - sz.x - 8)
+	p.y = clampf(p.y, 104, vp.y - sz.y - 8)
+	tip_panel.position = p
+	tip_panel.show()
+
+
+func hide_item_tip() -> void:
+	tip_panel.hide()
 
 
 func _make_confetti() -> CPUParticles2D:
@@ -324,11 +400,11 @@ func reveal(result: Dictionary, pay: int) -> void:
 	var i := 0
 	for r in result.get("reasons", []):
 		var row := HBoxContainer.new()
-		var text := _label(26, INK, String(r["text"]))
+		var text := _label(MIN_FONT, INK, String(r["text"]))
 		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		text.clip_text = true
 		row.add_child(text)
-		var pts := _label(26, ACCENT if int(r["points"]) >= int(r["max"]) * 0.75 else DIM, "+%d" % int(r["points"]))
+		var pts := _label(MIN_FONT, ACCENT if int(r["points"]) >= int(r["max"]) * 0.75 else DIM, "+%d" % int(r["points"]))
 		row.add_child(pts)
 		reasons_box.add_child(row)
 		row.modulate.a = 0.0
@@ -350,13 +426,47 @@ func _set_percent(v: float) -> void:
 		Audio.play_sfx(Sfx.get_stream("tick"), -10.0, 0.02, 0.8 + v / 100.0)
 
 
-func show_payday(pay: int, earned_total: int, has_next: bool) -> void:
+func show_packing(container_name: String) -> void:
+	panel.hide()
+	side.hide()
+	pack_bar.show()
+	pack_bar.modulate.a = 0.0
+	create_tween().tween_property(pack_bar, "modulate:a", 1.0, 0.25)
+	set_job_title("Pack everything back into the %s" % container_name.to_lower())
+
+
+func set_pack_status(packed: int, total: int, seconds: float) -> void:
+	pack_status.text = "%d of %d packed     %s" % [packed, total, clock(seconds)]
+
+
+static func clock(seconds: float) -> String:
+	var s := int(seconds)
+	return "%d:%02d" % [s / 60, s % 60]
+
+
+## Payday card. `pack_seconds` < 0 = packed automatically. `unlocked` = title of a job this
+## unlocked (empty for none).
+func show_payday(pay: int, earned_total: int, has_next: bool, pack_seconds := -1.0, unlocked := "") -> void:
+	pack_bar.hide()
+	hide_item_tip()
+	panel.show()
+	panel.position.x = PANEL_X
 	for c in buttons_box.get_children():
 		c.queue_free()
-	pay_label.text = "Packed and returned!  +$%d   (total $%d)" % [pay, earned_total]
+	for c in reasons_box.get_children():  # already read at the reveal; make room for payday
+		c.queue_free()
+	var lines := "Packed and returned!" if pack_seconds < 0.0 else "Packed in %s!" % clock(pack_seconds)
+	lines += "\n+$%d   (total $%d)" % [pay, earned_total]
+	if not unlocked.is_empty():
+		lines += "\nNew job unlocked: %s" % unlocked
+	pay_label.text = lines
 	pay_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var next := _button("Next job" if has_next else "Back to job 1", next_pressed)
-	buttons_box.add_child(next)
-	buttons_box.add_child(_button("Try this job again", retry_pressed))
-	buttons_box.add_child(_button("Title screen", title_pressed))
-	next.grab_focus()
+	pay_label.custom_minimum_size = Vector2(384, 0)
+	var first: Button
+	if has_next:
+		first = _button("Next job", next_pressed)
+		buttons_box.add_child(first)
+	var again := _button("Try this job again", retry_pressed)
+	buttons_box.add_child(again)
+	buttons_box.add_child(_button("Job list", title_pressed))
+	(first if first else again).grab_focus()
