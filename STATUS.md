@@ -26,6 +26,10 @@ finishes or waits on the user._
 - 002 Knolling Co. — abandoned (genre not fun to the user).
 - 003 Rockhound — abandoned (boring).
 
+## Automation
+- Hourly resume check-in: scheduled task "Game factory: hourly resume check-in" (fires at :41 each hour).
+- Environment "waterfall" setup script installs Godot 4.7.1 + templates on fresh containers.
+
 ## Resume checklist (used by the hourly check-in)
 1. `git status`; commit and push any partial work as WIP.
 2. Re-read this file and `memories/INDEX.md`.
