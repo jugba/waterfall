@@ -72,7 +72,7 @@ func _hills(size: Vector2, cam: Vector2, factor: float, base: float, amp: float,
 	# little round trees on the near layer
 	if factor > 0.2:
 		var step := 260.0
-		var start := floor((cam.x * factor) / step) * step
+		var start := floorf((cam.x * factor) / step) * step
 		var wx2 := start
 		while wx2 < cam.x * factor + size.x + step:
 			var sx := wx2 - cam.x * factor + 60.0

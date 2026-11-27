@@ -4,7 +4,7 @@ extends Node2D
 ## Everything is drawn here with simple shapes; one node, no per-particle nodes.
 
 const DUST := Color(1.0, 0.97, 0.9, 0.85)
-const GHOST := Color(1.0, 0.75, 0.45, 0.45)
+const GHOST := Color(0.55, 0.9, 1.0, 0.6)
 
 var _puffs: Array = []   # {p, v, r, life, max, c, grow}
 var _rings: Array = []   # {p, r, life, max, c}
@@ -53,7 +53,7 @@ func popup(at: Vector2, text: String, color: Color, size := 40) -> void:
 
 func _process(delta: float) -> void:
 	for list in [_puffs, _rings, _ghosts, _lines, _texts]:
-		var i := list.size() - 1
+		var i: int = list.size() - 1
 		while i >= 0:
 			var e: Dictionary = list[i]
 			e["life"] += delta
@@ -75,7 +75,9 @@ func _draw() -> void:
 		var c := GHOST
 		c.a *= k
 		draw_set_transform(g["p"], 0.0, Vector2(g["s"].x * g["f"], g["s"].y))
-		draw_colored_polygon(PlayerView.ellipse(Vector2(0, -27), Vector2(23, 24.5), 20), c)
+		var body := PlayerView.ellipse(Vector2(0, -27), Vector2(23, 24.5), 20)
+		draw_colored_polygon(body, c)
+		draw_arc(Vector2(0, -30), 27.0, PI * 1.08, PI * 1.92, 12, Color(1, 1, 1, c.a), 4.0)
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	for l in _lines:
 		var k: float = 1.0 - l["life"] / l["max"]

@@ -11,7 +11,12 @@ var _shake := 0.0
 var _y := 0.0
 
 
+func base_zoom() -> float:
+	return float(ctl.T["camera"].get("zoom", 1.0)) if ctl else 1.0
+
+
 func snap() -> void:
+	zoom = Vector2.ONE * base_zoom()
 	if target:
 		_y = target.position.y
 		position = _goal()

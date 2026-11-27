@@ -8,13 +8,10 @@ finishes or waits on the user._
 (movement feel → music-synced levels → charm). Phase: **greybox prototype → fun gate**.
 
 ## Running work
-| Work | Who | Started | Output |
-|---|---|---|---|
-| Beatrunner greybox: movement sandbox + one music level + Mac/Win/Linux builds | subagent | 2026-11-27 | `projects/004-rhythm-platformer/game/`, `playtest/` |
+_None._
 
 ## Next steps (in order)
-1. When the prototype is reported done: review, commit, send the user the Mac build
-   (`playtest/builds/Beatrunner-0.1.0-macos-universal.zip`) with the Gatekeeper steps.
+1. Beatrunner 0.1.0 greybox delivered to the user 2026-11-27 (51 tests, Mac/Win/Linux builds).
 2. Wait for the user's fun-gate verdict. No store page, art or polish work before that.
 
 ## Waiting on the user

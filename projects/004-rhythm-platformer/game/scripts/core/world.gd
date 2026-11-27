@@ -13,8 +13,8 @@ var _cells: Dictionary = {}  # int column -> Array of solids
 func add(rect: Rect2, kind := "solid", data := {}) -> Dictionary:
 	var s := {"rect": rect, "kind": kind, "alive": true, "id": solids.size(), "data": data}
 	solids.append(s)
-	var c0 := int(floor(rect.position.x / CELL))
-	var c1 := int(floor(rect.end.x / CELL))
+	var c0 := int(floorf(rect.position.x / CELL))
+	var c1 := int(floorf(rect.end.x / CELL))
 	for c in range(c0, c1 + 1):
 		if not _cells.has(c):
 			_cells[c] = []
@@ -26,8 +26,8 @@ func add(rect: Rect2, kind := "solid", data := {}) -> Dictionary:
 func query(r: Rect2) -> Array:
 	var out: Array = []
 	var seen := {}
-	var c0 := int(floor(r.position.x / CELL))
-	var c1 := int(floor(r.end.x / CELL))
+	var c0 := int(floorf(r.position.x / CELL))
+	var c1 := int(floorf(r.end.x / CELL))
 	for c in range(c0, c1 + 1):
 		for s in _cells.get(c, []):
 			if s["alive"] and not seen.has(s["id"]) and r.intersects(s["rect"]):

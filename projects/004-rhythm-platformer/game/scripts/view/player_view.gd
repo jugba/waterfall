@@ -186,9 +186,9 @@ func _draw() -> void:
 	var step := sin(_run_phase)
 	var air := not ctl.on_floor
 	for side in [-1.0, 1.0]:
-		var lift := maxf(0.0, step * side) * 7.0 if not air else 3.0
-		var fwd := step * side * 5.0 if not air else 2.0
-		var foot := Vector2(side * 10.0 + fwd + 3.0, -5.0 - lift)
+		var lift: float = maxf(0.0, step * side) * 7.0 if not air else 3.0
+		var fwd: float = step * side * 5.0 if not air else 2.0
+		var foot: Vector2 = Vector2(side * 10.0 + fwd + 3.0, -5.0 - lift)
 		draw_colored_polygon(ellipse(foot, Vector2(9, 5.5), 16), BODY_DARK)
 	# leaf glider (behind the body)
 	if _leaf > 0.01:

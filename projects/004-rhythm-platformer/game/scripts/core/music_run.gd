@@ -153,7 +153,7 @@ func _check_pads() -> void:
 			_pad_used[i] = true
 			ctl.bounce(MusicCourse.BOUNCE_SPEED)
 			perfects += 1
-			events.append({"type": "pad", "pos": Vector2(p["x0"] + 32.0, MusicCourse.GROUND_Y), "glide": p["glide"]})
+			events.append({"type": "pad", "index": i, "pos": Vector2(p["x0"] + 32.0, MusicCourse.GROUND_Y), "glide": p["glide"]})
 
 
 func _check_lums() -> void:

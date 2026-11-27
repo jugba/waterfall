@@ -117,7 +117,7 @@ func ideal_inputs() -> Dictionary:
 	var presses := {}  # frame -> {jump_press, jump_hold_frames, punch}
 	var holds := {}    # frame -> true (jump held)
 	for e in map.events:
-		var f := int(ceil(e["time"] / DT - 0.0001))
+		var f := int(ceilf(e["time"] / DT - 0.0001))
 		match e["type"]:
 			"jump":
 				_mark(presses, f, "jump")

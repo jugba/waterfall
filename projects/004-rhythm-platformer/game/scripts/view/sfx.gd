@@ -37,7 +37,7 @@ static func get_stream(id: String) -> AudioStream:
 static func _make(id: String) -> AudioStreamWAV:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(id)
-	var dur := {"jump": 0.14, "wall_jump": 0.16, "land": 0.1, "land_hard": 0.22, "dash": 0.22,
+	var dur: float = {"jump": 0.14, "wall_jump": 0.16, "land": 0.1, "land_hard": 0.22, "dash": 0.22,
 		"punch": 0.09, "hit": 0.16, "break": 0.3, "lum": 0.32, "bounce": 0.36, "death": 0.6,
 		"checkpoint": 0.5, "perfect": 0.32, "win": 1.2, "glide": 0.25, "wall_run": 0.18,
 		"tick": 0.05, "go": 0.3}.get(id, 0.15)

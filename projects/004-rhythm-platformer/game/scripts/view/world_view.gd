@@ -97,7 +97,7 @@ func _earth(vis: Rect2, full: Rect2) -> void:
 		draw_rect(Rect2(full.end.x - 8, body.position.y, 8, body.size.y), EARTH_DARK)
 	# pebbles (deterministic by position)
 	var step := 64.0
-	var x := floor(vis.position.x / step) * step
+	var x := floorf(vis.position.x / step) * step
 	while x < vis.end.x:
 		var y := full.position.y + 40.0
 		var row := 0
@@ -113,7 +113,7 @@ func _earth(vis: Rect2, full: Rect2) -> void:
 	if full.position.y >= vis.position.y - 20.0:
 		var top := full.position.y + bob
 		draw_rect(Rect2(vis.position.x, top, vis.size.x, 16), GRASS)
-		var sx := maxf(full.position.x + 10.0, floor(vis.position.x / 22.0) * 22.0)
+		var sx := maxf(full.position.x + 10.0, floorf(vis.position.x / 22.0) * 22.0)
 		while sx < minf(full.end.x - 6.0, vis.end.x + 22.0):
 			draw_circle(Vector2(sx, top + 16.0), 9.0, GRASS)
 			sx += 22.0
@@ -123,7 +123,7 @@ func _earth(vis: Rect2, full: Rect2) -> void:
 		if vis.end.x >= full.end.x - 1.0:
 			draw_circle(Vector2(full.end.x - 4.0, top + 8.0), 10.0, GRASS)
 		# tufts that bounce on the beat
-		var tx := floor(vis.position.x / 150.0) * 150.0 + 40.0
+		var tx := floorf(vis.position.x / 150.0) * 150.0 + 40.0
 		while tx < vis.end.x:
 			if tx > full.position.x + 20.0 and tx < full.end.x - 20.0:
 				var hgt := 10.0 + pulse * 8.0
@@ -214,8 +214,8 @@ func _sign(s: Dictionary) -> void:
 	for l in lines:
 		w = maxf(w, font.get_string_size(l, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x)
 	var h := lines.size() * 36.0 + 20.0
-	var box := Rect2(p.x - w * 0.5 - 20, p.y - h - 60, w + 40, h)
-	draw_rect(Rect2(p.x - 5, box.end.y, 10, 60), PLANK)
+	var box := Rect2(p.x - w * 0.5 - 20, p.y - h - 170, w + 40, h)
+	draw_rect(Rect2(p.x - 5, box.end.y, 10, 170), PLANK)
 	draw_rect(box.grow(4), INK)
 	draw_rect(box, SIGN)
 	for i in lines.size():
