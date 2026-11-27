@@ -103,3 +103,9 @@ store page, art direction and game 003 prep started in parallel.
 
 Outcome: All 4 subagents (store page, art, polish, game 003) had stopped on the account's
 5-hour usage limit; committed partial work as WIP and resumed each agent.
+
+## Prompt 15
+> I get this when I try to run the game "KnollingCo" can't be opened because Apple cannot check it for malicious software."
+
+Outcome: Gave Open Anyway / xattr steps; added the warning text to PLAYTEST.md; memory
+`tech/macos-gatekeeper-unnotarized-builds-need-open-anyway`. Game 003 dialog went unanswered (pending).

@@ -17,6 +17,7 @@ Builds are made by `tools/godot/build.sh projects/002-cozy-organizing-sim` and c
 **Opening on a Mac.** The app is ad-hoc signed, not notarized (we have no Apple Developer ID), so
 macOS blocks the first launch with "cannot be opened / Apple could not verify…". Do this once:
 1. Unzip, drag `KnollingCo.app` to Applications (or Desktop). Double-click it; click **Done**.
+   You will first see **"KnollingCo can't be opened because Apple cannot check it for malicious software."** This is expected for an unsigned playtest build. Click **Done**, then:
 2. macOS 14 and older: **right-click (Control-click) the app → Open → Open**.
    macOS 15+ (that menu no longer bypasses it): **System Settings → Privacy & Security**, scroll to
    "KnollingCo.app was blocked…", click **Open Anyway**, enter your password, then **Open**.

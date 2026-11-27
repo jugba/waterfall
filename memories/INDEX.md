@@ -25,6 +25,8 @@ Read this at the start of every session. One line per memory: `path — learning
 - `design/second-verb-needed-as-organizing-supply-explodes` — Organizing releases 7→192/quarter in 2026; add a craft/repair/deduce/pack verb or new view (medium)
 - `design/freeform-scoring-beats-single-solution-in-cozy-puzzles` — single-solution cozy puzzles score 72–79%, freeform ones 94–99% (low)
 - `design/knolling-scorer-groups-by-neighbours-at-smallest-gap` — tidiness grouping = aligned neighbours at the smallest gap, best of type/colour; centre-kNN fails tidy rows (medium)
+- `design/rotating-sprites-need-light-neutral-shading` — items that rotate get symmetric form shading and no baked shadow; the engine draws one soft shadow (medium)
+- `design/colour-sort-palette-check-cvd-delta-e` — colour-scored palettes: check ΔE00 ≥10 under protan/deutan/tritan simulation, spread lightness, keep a non-colour route (high)
 ## tech
 - `tech/godot-gdscript-is-default-engine` — default engine is Godot 4 + GDScript; deviate only with a written reason (medium)
 - `tech/godot-headless-build-recipe` — Godot imports/tests/exports fully headless here from GitHub release binaries (high)
@@ -36,6 +38,8 @@ Read this at the start of every session. One line per memory: `path — learning
 - `tech/godot-generate-project-settings-headless` — generate InputMap/bus layout via headless script + ProjectSettings.save(); joypad device -1 (high)
 - `tech/godot-headless-capture-xvfb-write-movie` — screenshots/clips in the container: xvfb-run + opengl3 + --write-movie + an --autoplay user arg (high)
 - `tech/godot-macos-export-unsigned-from-linux` — Linux exports a universal ad-hoc-signed macOS .app zip; needs import_etc2_astc=true; unnotarized, players allow once (high)
+- `tech/macos-gatekeeper-unnotarized-builds-need-open-anyway` — unsigned Mac builds need Open Anyway / xattr; notarize for release (high)
+
 ## marketing
 - `marketing/coming-soon-page-live-five-weeks-before-launch` — Coming Soon page live ~5 weeks before launch (official min 2 weeks) (medium)
 - `marketing/steam-release-blocks-discounts-30-days` — release blocks discounts 30 days except ≤40% launch discount; release ≥30 days before a seasonal sale (high)
@@ -49,3 +53,5 @@ Read this at the start of every session. One line per memory: `path — learning
 - `marketing/developer-homepage-followers-compound-across-releases` — link every game to one Developer Homepage; its followers get release emails (medium)
 - `marketing/short-form-video-is-primary-free-channel` — TikTok/Shorts/Reels are the main free channel and the hook test (medium)
 - `marketing/next-fest-registration-needs-coming-soon-page-live` — Next Fest requires the page public as Coming Soon *at registration*; submit the store page ~3 weeks before the deadline (medium-high)
+- `marketing/store-screenshots-16-9-capture-from-16-10-game` — Steam screenshots are 16:9 ≥1920×1080; 16:10 Deck-native games need an expand-aspect 16:9 capture mode early (medium)
+- `marketing/name-check-via-steam-search-json-organizing-words-taken` — name-check via Steam search JSON (match title substrings, then appdetails); Tidy/Sort/Neat/Unpack/Everything names taken; user runs TM search (high)
