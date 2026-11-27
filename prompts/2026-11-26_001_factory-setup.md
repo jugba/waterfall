@@ -122,3 +122,9 @@ which direction to take instead.
 
 Outcome: 002 abandoned with postmortem + 2 process memories + fun-gate rule in monthly-cycle;
 project 003-rockhound created and set ACTIVE; brief + greybox delegated.
+
+## Prompt 17
+> So that's also boring to play, can we create a platformer like rayman legend instead?
+
+Outcome: 003 Rockhound abandoned (postmortem); taste memory revised; asked what the user loves
+about Rayman Legends and how to handle scope/market risk.

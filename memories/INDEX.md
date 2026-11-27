@@ -10,7 +10,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `process/steam-review-lead-time-three-weeks` — submit Steam build ≥4 weeks before launch; reviews take up to 12 business days (high)
 - `process/steam-direct-fee-pay-two-games-ahead` — pay each $100 Steam Direct fee ≥30 days ahead; pay for game N+2 when N launches (medium)
 
-- `process/check-team-enjoys-genre-before-building` — market lift isn't enough; confirm the team enjoys the genre first; organizing is out (high)
+- `process/check-team-enjoys-genre-before-building` — market lift isn't enough; confirm the team enjoys the genre first; organizing and incremental are out, platformers in (high)
 - `process/no-production-work-before-fun-gate-passes` — no store/art/polish until the week-1 fun gate passes; playable build in 1–2 days (high)
 
 ## market

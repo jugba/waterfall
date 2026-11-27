@@ -3,7 +3,7 @@
 - ID: 003
 - Type: game
 - Start: 2026-11-27 · Target ship date: TBD after fun gate
-- Status: prototype
+- Status: abandoned 2026-11-27 (no-go at first playtest: "boring to play")
 
 ## Goal
 A short, tactile geode-cracking incremental for Steam at **$7.99**: dig rocks, crack them open

@@ -10,3 +10,8 @@
 Market lift is necessary, not sufficient. Before committing, ask the user (via dialog) whether
 they enjoy playing that genre and which games in it they like. Filter the candidate
 directions by that, then by market data. Known: organizing/tidying games are out for this team.
+
+- Revised 2026-11-27: the incremental prototype (projects/003-rockhound) was also "boring". The user
+  wants a 2D platformer like Rayman Legends. Known taste so far: organizing ✗, incremental ✗,
+  action platformer ✓. Next time ask "what games do you love playing?" *before* the market
+  research, and use the research to pick the angle within that genre.
