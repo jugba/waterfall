@@ -153,3 +153,8 @@ Outcome: Proposed a recurring scheduled check-in into this session + a repo resu
 > Extras: STATUS.md resume file, Godot setup script
 
 Outcome: STATUS.md + CLAUDE.md rule 12 + memory; hourly scheduled check-in; Godot setup script proposed.
+
+## Prompt 20
+> Please review https://apps.apple.com/us/app/butcher-hero-monster-idle-rpg/id6757722046 tell me what you think
+
+Outcome: App Store page read via web-fetch agent; review given in chat.
