@@ -14,8 +14,13 @@ const BUSES: Array[String] = ["Master", "Music", "SFX"]
 ## Actions shown in the controls menu. Add game-specific actions here and in project.godot.
 const REBINDABLE_ACTIONS: Array[StringName] = [
 	&"move_up", &"move_down", &"move_left", &"move_right",
-	&"action_primary", &"action_secondary", &"pause",
+	&"jump", &"punch", &"dash", &"pause",
 ]
+## Xbox-style labels (Steam Deck uses the same layout: A bottom, B right, X left, Y top).
+const PAD_BUTTON_NAMES := {
+	0: "A", 1: "B", 2: "X", 3: "Y", 4: "Back", 6: "Start", 9: "LB", 10: "RB",
+	11: "D-pad Up", 12: "D-pad Down", 13: "D-pad Left", 14: "D-pad Right",
+}
 const DEFAULT_VOLUMES := {"Master": 0.8, "Music": 0.7, "SFX": 0.8}
 
 var path := DEFAULT_PATH
@@ -122,9 +127,13 @@ static func _event_label(e: InputEvent) -> String:
 		return OS.get_keycode_string(DisplayServer.keyboard_get_label_from_physical(code)) \
 			if DisplayServer.get_name() != "headless" else OS.get_keycode_string(code)
 	if e is InputEventJoypadButton:
-		return "Pad %d" % e.button_index
+		return PAD_BUTTON_NAMES.get(int(e.button_index), "Pad %d" % e.button_index)
 	if e is InputEventJoypadMotion:
-		return "Axis %d%s" % [e.axis, "+" if e.axis_value > 0 else "-"]
+		if e.axis == JOY_AXIS_TRIGGER_LEFT:
+			return "LT"
+		if e.axis == JOY_AXIS_TRIGGER_RIGHT:
+			return "RT"
+		return "Stick %d%s" % [e.axis, "+" if e.axis_value > 0 else "-"]
 	return e.as_text()
 
 

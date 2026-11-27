@@ -13,3 +13,5 @@ build/
 *.tmp
 .DS_Store
 Thumbs.db
+# Playtest build zips (shared out of band)
+playtest/builds/

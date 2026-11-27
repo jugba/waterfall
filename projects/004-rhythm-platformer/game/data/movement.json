@@ -1,0 +1,53 @@
+{
+  "_doc": "Every movement/feel tuning value lives here. Units: pixels, seconds. Curves are [speed_fraction, multiplier] points, linearly interpolated. Read by scripts/core/tuning.gd; F5 reloads it in debug builds.",
+  "body": { "width": 40, "height": 52 },
+  "run": {
+    "max_speed": 440,
+    "accel_ground": 2400,
+    "decel_ground": 3000,
+    "turn_accel": 6200,
+    "accel_air": 1900,
+    "decel_air": 700,
+    "accel_curve": [[0.0, 1.7], [0.4, 1.2], [0.85, 0.8], [1.0, 0.6]],
+    "decel_curve": [[0.0, 0.55], [0.3, 0.8], [1.0, 1.25]],
+    "input_deadzone": 0.25
+  },
+  "jump": {
+    "height": 150,
+    "time_to_apex": 0.36,
+    "release_cut": 0.6,
+    "coyote_time": 0.1,
+    "buffer_time": 0.12
+  },
+  "apex": { "speed_threshold": 130, "gravity_mult": 0.45, "air_accel_mult": 1.25 },
+  "fall": { "gravity_mult": 1.35, "max_speed": 920, "fast_fall_gravity_mult": 2.4, "fast_fall_max_speed": 1450 },
+  "glide": { "gravity_mult": 0.3, "max_fall_speed": 115, "auto_start_fall_speed": 180, "air_speed_mult": 1.05 },
+  "wall": {
+    "slide_max_speed": 170,
+    "slide_gravity_mult": 0.55,
+    "coyote_time": 0.09,
+    "jump_speed_x": 470,
+    "jump_speed_y": 760,
+    "control_lock_time": 0.16,
+    "control_lock_mult": 0.15,
+    "run_speed": 470,
+    "run_time": 0.26,
+    "run_min_speed_frac": 0.55
+  },
+  "dash": { "speed": 1150, "time": 0.15, "cooldown": 0.32, "end_speed_mult": 0.6, "air_dashes": 1 },
+  "punch": { "range": 80, "height": 50, "active_time": 0.14, "cooldown": 0.24, "lunge_speed": 160, "hitstop": 0.075, "air_hang": 0.6 },
+  "feel": {
+    "squash_land_max": 0.38,
+    "stretch_jump": 0.28,
+    "squash_spring": 260,
+    "squash_damping": 16,
+    "trail_speed": 560,
+    "afterimage_interval": 0.028,
+    "afterimage_life": 0.22,
+    "dust_land_speed": 380,
+    "shake_punch": 7,
+    "shake_land_hard": 5
+  },
+  "camera": { "lookahead_x": 170, "lookahead_rate": 2.2, "smoothing": 6.5, "vertical_offset": -70, "vertical_smoothing": 3.5, "fall_lookdown": 90 },
+  "music": { "run_speed": 400, "perfect_window": 0.07, "good_window": 0.14, "respawn_lead_beats": 4 }
+}

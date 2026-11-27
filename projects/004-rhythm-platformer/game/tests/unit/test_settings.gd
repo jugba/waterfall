@@ -60,12 +60,12 @@ func test_rebind_keyboard_keeps_controller() -> void:
 func test_rebind_survives_save_load() -> void:
 	var b := InputEventJoypadButton.new()
 	b.button_index = JOY_BUTTON_Y
-	Settings.rebind(&"action_primary", b)
+	Settings.rebind(&"jump", b)
 	Settings.save_settings()
 	Settings.reset_bindings()
 	Settings.load_settings()
 	var found := false
-	for e in InputMap.action_get_events(&"action_primary"):
+	for e in InputMap.action_get_events(&"jump"):
 		found = found or (e is InputEventJoypadButton and e.button_index == JOY_BUTTON_Y)
 	assert_true(found)
 
