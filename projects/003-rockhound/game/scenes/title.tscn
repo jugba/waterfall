@@ -37,7 +37,13 @@ theme_override_constants/separation = 16
 [node name="GameTitle" type="Label" parent="Menu/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 72
-text = "Template Game"
+text = "ROCKHOUND"
+horizontal_alignment = 1
+
+[node name="Tagline" type="Label" parent="Menu/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Dig. Crack. Reveal. (greybox prototype)"
 horizontal_alignment = 1
 
 [node name="Play" type="Button" parent="Menu/VBox"]
@@ -45,6 +51,12 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 64)
 layout_mode = 2
 text = "Play"
+
+[node name="NewGame" type="Button" parent="Menu/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 64)
+layout_mode = 2
+text = "New game"
 
 [node name="Settings" type="Button" parent="Menu/VBox"]
 unique_name_in_owner = true
@@ -72,7 +84,7 @@ offset_right = -24.0
 offset_bottom = -16.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 28
 text = "v0.1.0"
 horizontal_alignment = 2
 

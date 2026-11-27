@@ -29,6 +29,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `design/freeform-scoring-beats-single-solution-in-cozy-puzzles` — single-solution cozy puzzles score 72–79%, freeform ones 94–99% (low)
 - `design/knolling-scorer-groups-by-neighbours-at-smallest-gap` — tidiness grouping = aligned neighbours at the smallest gap, best of type/colour; centre-kNN fails tidy rows (medium)
 - `design/rotating-sprites-need-light-neutral-shading` — items that rotate get symmetric form shading and no baked shadow; the engine draws one soft shadow (medium)
+- `design/encode-pacing-promises-as-unit-tests` — test first-upgrade time, pity gap and roll odds against balance JSON with seeded sims (medium)
 - `design/colour-sort-palette-check-cvd-delta-e` — colour-scored palettes: check ΔE00 ≥10 under protan/deutan/tritan simulation, spread lightness, keep a non-colour route (high)
 ## tech
 - `tech/godot-gdscript-is-default-engine` — default engine is Godot 4 + GDScript; deviate only with a written reason (medium)
@@ -41,6 +42,7 @@ Read this at the start of every session. One line per memory: `path — learning
 - `tech/godot-generate-project-settings-headless` — generate InputMap/bus layout via headless script + ProjectSettings.save(); joypad device -1 (high)
 - `tech/godot-headless-capture-xvfb-write-movie` — screenshots/clips in the container: xvfb-run + opengl3 + --write-movie + an --autoplay user arg (high)
 - `tech/godot-macos-export-unsigned-from-linux` — Linux exports a universal ad-hoc-signed macOS .app zip; needs import_etc2_astc=true; unnotarized, players allow once (high)
+- `tech/godot-2d-glow-additive-layers-behind-and-in-front` — fake glow with ADD-blend draw layers + radial gradient; big glow behind the subject or it washes out (high)
 - `tech/macos-gatekeeper-unnotarized-builds-need-open-anyway` — unsigned Mac builds need Open Anyway / xattr; notarize for release (high)
 
 ## marketing

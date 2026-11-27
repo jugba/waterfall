@@ -1,0 +1,62 @@
+{
+	"_note": "Rockhound greybox balance. Tiers are ordered common -> legendary; weights are relative. Edit freely; tests read this file.",
+	"tiers": [
+		{"id": "common", "name": "Common", "stars": 1, "weight": 700, "value": 3, "strikes": 3, "color": "#b8b4ad", "glow": "#d8d4cc"},
+		{"id": "uncommon", "name": "Uncommon", "stars": 2, "weight": 220, "value": 9, "strikes": 4, "color": "#5fd17a", "glow": "#8dffa6"},
+		{"id": "rare", "name": "Rare", "stars": 3, "weight": 60, "value": 45, "strikes": 6, "color": "#4aa8ff", "glow": "#9fd2ff"},
+		{"id": "epic", "name": "Epic", "stars": 4, "weight": 16, "value": 240, "strikes": 8, "color": "#b465ff", "glow": "#dcb0ff"},
+		{"id": "legendary", "name": "Legendary", "stars": 5, "weight": 4, "value": 1500, "strikes": 10, "color": "#ffc23d", "glow": "#fff0a8"}
+	],
+	"pity": {
+		"rare_after": 18,
+		"epic_after": 90
+	},
+	"luck_per_level": 0.15,
+	"shell_hint_accuracy": 0.7,
+	"crystals": [
+		{"id": "quartz", "name": "Clear Quartz", "tier": 0, "value_mult": 1.0, "color": "#e9f1f5"},
+		{"id": "calcite", "name": "Honey Calcite", "tier": 0, "value_mult": 1.1, "color": "#f0b35e"},
+		{"id": "agate", "name": "Banded Agate", "tier": 0, "value_mult": 1.2, "color": "#8fa3c9"},
+		{"id": "jasper", "name": "Red Jasper", "tier": 0, "value_mult": 1.3, "color": "#c4513b"},
+		{"id": "rose_quartz", "name": "Rose Quartz", "tier": 1, "value_mult": 1.0, "color": "#ff9ec4"},
+		{"id": "citrine", "name": "Citrine", "tier": 1, "value_mult": 1.15, "color": "#ffd33d"},
+		{"id": "fluorite", "name": "Fluorite", "tier": 1, "value_mult": 1.25, "color": "#7be3c6"},
+		{"id": "malachite", "name": "Malachite", "tier": 1, "value_mult": 1.35, "color": "#21b36b"},
+		{"id": "amethyst", "name": "Amethyst Cathedral", "tier": 2, "value_mult": 1.0, "color": "#a35cff"},
+		{"id": "aquamarine", "name": "Aquamarine", "tier": 2, "value_mult": 1.2, "color": "#5fe0ff"},
+		{"id": "topaz", "name": "Imperial Topaz", "tier": 2, "value_mult": 1.4, "color": "#ff9a2e"},
+		{"id": "emerald", "name": "Emerald", "tier": 3, "value_mult": 1.0, "color": "#2cff8f"},
+		{"id": "sapphire", "name": "Star Sapphire", "tier": 3, "value_mult": 1.3, "color": "#3d6bff"},
+		{"id": "star_opal", "name": "Star Opal", "tier": 4, "value_mult": 1.0, "color": "#ffe6fb"},
+		{"id": "heartstone", "name": "Heartstone", "tier": 4, "value_mult": 1.5, "color": "#ff2d55"}
+	],
+	"sets": [
+		{"id": "quartz_family", "name": "Quartz Family", "members": ["quartz", "rose_quartz", "amethyst", "citrine"], "bonus": 0.15},
+		{"id": "warm_stones", "name": "Warm Stones", "members": ["calcite", "jasper", "topaz"], "bonus": 0.15},
+		{"id": "greens", "name": "Green Room", "members": ["fluorite", "malachite", "emerald"], "bonus": 0.2},
+		{"id": "blues", "name": "Deep Blue", "members": ["agate", "aquamarine", "sapphire"], "bonus": 0.2},
+		{"id": "legends", "name": "Legends", "members": ["star_opal", "heartstone"], "bonus": 0.5}
+	],
+	"upgrades": [
+		{"id": "pick", "name": "Sharper Pick", "desc": "+1 dig power", "base_cost": 15, "growth": 1.6, "max": 30},
+		{"id": "vein", "name": "Rich Vein", "desc": "+20% extra geodes", "base_cost": 40, "growth": 1.75, "max": 20},
+		{"id": "luck", "name": "Lucky Lamp", "desc": "rarer crystals", "base_cost": 75, "growth": 1.9, "max": 20},
+		{"id": "polish", "name": "Polish Wheel", "desc": "hold to polish x", "base_cost": 120, "growth": 2.2, "max": 8},
+		{"id": "auto", "name": "Auto-Digger", "desc": "+0.8 digs/s idle", "base_cost": 90, "growth": 1.7, "max": 25}
+	],
+	"rock": {
+		"chunks_per_face": 12,
+		"base_chunk_hp": 4,
+		"hp_growth_per_depth": 1.22,
+		"value_growth_per_depth": 1.3,
+		"tray_size": 5,
+		"bulk_sell_factor": 0.6
+	},
+	"polish": {
+		"fill_seconds": 1.4,
+		"zone_start": 0.78,
+		"zone_end": 0.94,
+		"base_mult": 1.5,
+		"mult_per_level": 0.5
+	}
+}

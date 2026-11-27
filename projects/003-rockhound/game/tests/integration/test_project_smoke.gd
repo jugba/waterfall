@@ -1,6 +1,6 @@
 extends GutTest
 ## Whole-project smoke tests: every script compiles, every scene instantiates, the main scene
-## is set, the player moves on input, the pause menu pauses, scene transitions work.
+## is set, the core loop runs, the pause menu pauses, scene transitions work.
 
 const SCAN_DIRS := ["res://autoload", "res://scenes", "res://scripts", "res://ui"]
 
@@ -17,7 +17,8 @@ func after_each() -> void:
 	DirAccess.remove_absolute(SaveGame.directory)
 	SaveGame.directory = _orig_save_dir
 	get_tree().paused = false
-	for a in [&"move_right", &"pause"]:
+	Engine.time_scale = 1.0
+	for a in [&"action_primary", &"pause"]:
 		Input.action_release(a)
 
 
@@ -46,7 +47,7 @@ func test_all_scripts_compile() -> void:
 
 func test_all_scenes_instantiate() -> void:
 	var scenes := _files("tscn")
-	assert_gt(scenes.size(), 3)
+	assert_gt(scenes.size(), 2)
 	for p in scenes:
 		var packed: PackedScene = load(p)
 		assert_not_null(packed, p)
@@ -61,14 +62,48 @@ func test_main_scene_set() -> void:
 	assert_true(ResourceLoader.exists(main), "main scene %s exists" % main)
 
 
-func test_player_moves_right_on_input() -> void:
-	var player: CharacterBody2D = add_child_autofree(load("res://scenes/player.tscn").instantiate())
-	player.position = Vector2(200, 200)
-	Input.action_press(&"move_right")
-	await wait_physics_frames(10)
-	Input.action_release(&"move_right")
-	assert_gt(player.position.x, 200.0, "moved right")
-	assert_almost_eq(player.position.y, 200.0, 0.5, "did not drift vertically")
+func test_core_loop_dig_crack_sell_buy() -> void:
+	var game: Node = add_child_autofree(load("res://scenes/game.tscn").instantiate())
+	var eco = game.eco
+	assert_eq(eco.money, 0.0, "fresh save")
+	# Dig until a geode reaches the anvil.
+	var hits := 0
+	while game.anvil_state != game.Anvil.GEODE and hits < 100:
+		game.dig_hit()
+		hits += 1
+	assert_eq(game.anvil_state, game.Anvil.GEODE, "a geode is on the anvil after %d hits" % hits)
+	assert_lte(hits, 10, "first geode comes fast")
+	# Crack it.
+	var strikes := 0
+	while game.anvil_state == game.Anvil.GEODE and strikes < 50:
+		game.strike()
+		strikes += 1
+	assert_eq(game.anvil_state, game.Anvil.REVEALED)
+	assert_false(game.revealed.is_empty())
+	assert_eq(eco.collection.size(), 1, "book has the crystal")
+	# Sell, then keep looping until the first upgrade is affordable and buy it.
+	game.collect()
+	assert_gt(eco.money, 0.0, "sold for money")
+	var loops := 0
+	while not eco.can_buy("pick") and loops < 200:
+		if game.anvil_state == game.Anvil.GEODE:
+			game.strike()
+		elif game.anvil_state == game.Anvil.REVEALED:
+			game.collect()
+		else:
+			game.dig_hit()
+		loops += 1
+	assert_true(game.buy("pick"), "bought Sharper Pick")
+	assert_eq(eco.level("pick"), 1)
+	Engine.time_scale = 1.0
+
+
+func test_book_toggles() -> void:
+	var game: Node = add_child_autofree(load("res://scenes/game.tscn").instantiate())
+	game.toggle_book()
+	assert_true(game.book.visible)
+	game.toggle_book()
+	assert_false(game.book.visible)
 
 
 func test_pause_menu_pauses_and_resumes() -> void:
@@ -79,15 +114,6 @@ func test_pause_menu_pauses_and_resumes() -> void:
 	assert_true(menu.get_node("%Root").visible)
 	menu.resume()
 	assert_false(get_tree().paused)
-
-
-func test_game_scene_saves_player_position() -> void:
-	var game: Node = load("res://scenes/game.tscn").instantiate()
-	add_child(game)
-	game.get_node("Player").position = Vector2(300, 333)
-	game.free()  # _exit_tree saves
-	var data := SaveGame.load_slot(0)
-	assert_almost_eq(float(data.get("player_y", 0)), 333.0, 0.01)
 
 
 func test_scene_changer_rejects_missing_scene() -> void:

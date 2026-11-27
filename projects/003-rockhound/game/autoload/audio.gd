@@ -47,12 +47,13 @@ func stop_music(fade := 0.5) -> void:
 
 
 ## pitch_jitter adds small random variation so repeated sounds don't feel robotic.
-func play_sfx(stream: AudioStream, volume_db := 0.0, pitch_jitter := 0.05) -> void:
+## pitch sets the base pitch (e.g. rising ticks while a geode cracks).
+func play_sfx(stream: AudioStream, volume_db := 0.0, pitch_jitter := 0.05, pitch := 1.0) -> void:
 	if stream == null:
 		return
 	var p := _sfx[_next_sfx]
 	_next_sfx = (_next_sfx + 1) % _sfx.size()
 	p.stream = stream
 	p.volume_db = volume_db
-	p.pitch_scale = 1.0 + randf_range(-pitch_jitter, pitch_jitter)
+	p.pitch_scale = maxf(0.05, pitch * (1.0 + randf_range(-pitch_jitter, pitch_jitter)))
 	p.play()

@@ -9,6 +9,9 @@ const GAME_SCENE := "res://scenes/game.tscn"
 
 func _ready() -> void:
 	%Play.pressed.connect(_on_play)
+	%NewGame.pressed.connect(_on_new_game)
+	%Play.text = "Continue" if SaveGame.has_slot(0) else "Play"
+	%NewGame.visible = SaveGame.has_slot(0)
 	%Settings.pressed.connect(_on_settings)
 	%Quit.pressed.connect(get_tree().quit)
 	%Quit.visible = OS.get_name() != "Web"
@@ -18,6 +21,11 @@ func _ready() -> void:
 
 
 func _on_play() -> void:
+	SceneChanger.change_to(GAME_SCENE)
+
+
+func _on_new_game() -> void:
+	SaveGame.delete_slot(0)
 	SceneChanger.change_to(GAME_SCENE)
 
 
