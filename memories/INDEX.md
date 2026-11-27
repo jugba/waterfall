@@ -31,6 +31,8 @@ Read this at the start of every session. One line per memory: `path — learning
 - `design/rotating-sprites-need-light-neutral-shading` — items that rotate get symmetric form shading and no baked shadow; the engine draws one soft shadow (medium)
 - `design/encode-pacing-promises-as-unit-tests` — test first-upgrade time, pity gap and roll odds against balance JSON with seeded sims (medium)
 - `design/colour-sort-palette-check-cvd-delta-e` — colour-scored palettes: check ΔE00 ≥10 under protan/deutan/tritan simulation, spread lightness, keep a non-colour route (high)
+- `design/user-loves-platformer-movement-music-levels-charm` — target: tight 1-hook single-player platformer; movement → rhythm levels → charm (high)
+
 ## tech
 - `tech/godot-gdscript-is-default-engine` — default engine is Godot 4 + GDScript; deviate only with a written reason (medium)
 - `tech/godot-headless-build-recipe` — Godot imports/tests/exports fully headless here from GitHub release binaries (high)

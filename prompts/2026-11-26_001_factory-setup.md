@@ -128,3 +128,11 @@ project 003-rockhound created and set ACTIVE; brief + greybox delegated.
 
 Outcome: 003 Rockhound abandoned (postmortem); taste memory revised; asked what the user loves
 about Rayman Legends and how to handle scope/market risk.
+
+## Dialog answers (platformer direction)
+> What you love: Movement feel, Music levels, Art & charm
+> Approach: Tight, one-hook game (Recommended)
+> Players: Single-player first (Recommended)
+
+Outcome: Project 004-rhythm-platformer created, ACTIVE; movement + music-level greybox and a
+quick market check of rhythm platformers delegated.
