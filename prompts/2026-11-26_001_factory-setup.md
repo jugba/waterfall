@@ -90,3 +90,10 @@ Outcome: Decisions recorded in projects/002 BRIEF.md; greybox prototype subagent
 ## (no new user prompt) Greybox prototype delivered
 Outcome: Committed prototype; enabled git-lfs locally; allowed lfs.github.com in the
 "waterfall" environment so LFS assets push; added greybox mp4.
+
+## Dialog answers (playtest + parallel work)
+> Playtest: Send me builds but know that I use a Mac
+> Parallel: Store page draft, Art direction + AI sprites, Production polish, Game 003 market prep
+
+Outcome: macOS playtest build + kit delegated first (game code), then production polish;
+store page, art direction and game 003 prep started in parallel.
