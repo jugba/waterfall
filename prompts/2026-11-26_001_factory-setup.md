@@ -147,3 +147,9 @@ Pointed the user to claude.ai Settings → Usage.
 > We don't have to stretch the window, we just need you to be able to resuming working once the we hit the limit and the window is renewed.  How can we do this?
 
 Outcome: Proposed a recurring scheduled check-in into this session + a repo resume file; asked via dialog.
+
+## Dialog answers (resume setup)
+> Check-in: Every hour (Recommended)
+> Extras: STATUS.md resume file, Godot setup script
+
+Outcome: STATUS.md + CLAUDE.md rule 12 + memory; hourly scheduled check-in; Godot setup script proposed.

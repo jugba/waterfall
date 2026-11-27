@@ -4,7 +4,7 @@ extends Node
 ##
 ## Usage: Audio.play_music(preload("res://assets/audio/theme.ogg")); Audio.play_sfx(stream)
 
-const SFX_VOICES := 12
+const SFX_VOICES := 16
 
 var _music: Array[AudioStreamPlayer] = []
 var _active := 0
@@ -46,13 +46,14 @@ func stop_music(fade := 0.5) -> void:
 	create_tween().tween_property(current, "volume_db", -40.0, fade).finished.connect(current.stop)
 
 
-## pitch_jitter adds small random variation so repeated sounds don't feel robotic.
-func play_sfx(stream: AudioStream, volume_db := 0.0, pitch_jitter := 0.05) -> void:
+## pitch_jitter adds small random variation so repeated sounds don't feel robotic;
+## pitch sets the base pitch (e.g. a rising pickup chain).
+func play_sfx(stream: AudioStream, volume_db := 0.0, pitch_jitter := 0.05, pitch := 1.0) -> void:
 	if stream == null:
 		return
 	var p := _sfx[_next_sfx]
 	_next_sfx = (_next_sfx + 1) % _sfx.size()
 	p.stream = stream
 	p.volume_db = volume_db
-	p.pitch_scale = 1.0 + randf_range(-pitch_jitter, pitch_jitter)
+	p.pitch_scale = pitch * (1.0 + randf_range(-pitch_jitter, pitch_jitter))
 	p.play()

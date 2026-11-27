@@ -44,12 +44,18 @@ better at it each cycle by compounding what we learn.
       it asks a subagent for the summary.
     - Do it yourself only when it's quicker than writing the brief (a one-line edit, a quick
       status check) or when it needs the user's decision.
+12. **Survive usage limits and restarts.** Keep `STATUS.md` current (active project, running
+    work, next steps, what's waiting on the user) whenever work starts, finishes or waits on
+    the user. An hourly scheduled check-in sends this session a resume message. On each one,
+    follow the resume checklist in `STATUS.md`. Briefs tell agents to write their deliverables
+    first, so a stop loses as little as possible.
 
 ## Repository map
 
 | Path | Purpose |
 |---|---|
 | `CLAUDE.md` | These rules. Change only with the user's agreement. |
+| `STATUS.md` | Current state and resume checklist. Read first on every resume. |
 | `prompts/` | Verbatim log of every prompt, one file per session. |
 | `memories/` | Durable learnings, one file per topic: `memories/<area>/<topic-slug>.md`. |
 | `playbooks/` | Repeatable processes (monthly cycle, Steam launch checklist, …). |
