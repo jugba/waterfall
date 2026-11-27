@@ -158,3 +158,9 @@ Outcome: STATUS.md + CLAUDE.md rule 12 + memory; hourly scheduled check-in; Godo
 > Please review https://apps.apple.com/us/app/butcher-hero-monster-idle-rpg/id6757722046 tell me what you think
 
 Outcome: App Store page read via web-fetch agent; review given in chat.
+
+## Dialog answer (after Butcher Hero review)
+> Both in parallel
+
+Outcome: Project 005-hook-and-grow created (original premium take on hook-pull-eat-grow, no timers);
+greybox delegated while the user playtests 004 Beatrunner. ACTIVE lists both (user-approved parallel prototypes).

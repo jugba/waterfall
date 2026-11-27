@@ -3,16 +3,20 @@
 _Last updated: 2026-11-27 by the main session. Keep it current: update it whenever work starts,
 finishes or waits on the user._
 
-## Active project
-`projects/004-rhythm-platformer` — **Beatrunner** (working title), an original rhythm platformer
-(movement feel → music-synced levels → charm). Phase: **greybox prototype → fun gate**.
+## Active projects (user chose parallel prototypes, 2026-11-27)
+- `projects/004-rhythm-platformer` — **Beatrunner**, original rhythm platformer. Phase: **waiting on the user's fun gate**.
+- `projects/005-hook-and-grow` — original premium hook→pull→eat→grow action game (inspired by the
+  Butcher Hero review, `projects/_research/butcher-hero-app-review.md`; no timers/paywalls). Phase: **greybox**.
 
 ## Running work
-_None._
+| Work | Who | Started | Output |
+|---|---|---|---|
+| 005 hook-and-grow greybox + Mac/Win/Linux builds | subagent | 2026-11-27 | `projects/005-hook-and-grow/` |
 
 ## Next steps (in order)
 1. Beatrunner 0.1.0 greybox delivered to the user 2026-11-27 (51 tests, Mac/Win/Linux builds).
-2. Wait for the user's fun-gate verdict. No store page, art or polish work before that.
+2. When the 005 greybox is done: review, commit, send the Mac build.
+3. Wait for the user's fun-gate verdicts on 004 and 005. No store page, art or polish work before that.
 
 ## Waiting on the user
 - Fun-gate verdict on Beatrunner.
