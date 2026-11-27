@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="128" viewBox="0 0 512 128">
+<!-- Knolling Co. item "pencil_yellow", 4x1 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs><linearGradient id="ferrule" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a2abb6"/><stop offset=".32" stop-color="#c9d0d8"/><stop offset=".5" stop-color="#eef1f4"/><stop offset=".68" stop-color="#c9d0d8"/><stop offset="1" stop-color="#a2abb6"/></linearGradient><linearGradient id="rubber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dd96c4"/><stop offset=".32" stop-color="#f8b2df"/><stop offset=".5" stop-color="#ffd1f8"/><stop offset=".68" stop-color="#f8b2df"/><stop offset="1" stop-color="#dd96c4"/></linearGradient></defs>
+<rect x="14" y="34" width="46" height="60" rx="14" fill="url(#rubber)" stroke="#9b6889" stroke-width="6" stroke-linejoin="round" />
+<rect x="54" y="32" width="44" height="64" rx="4" fill="url(#ferrule)" stroke="#5f6873" stroke-width="6" stroke-linejoin="round" />
+<path d="M66 34V94M78 34V94" stroke="#a2abb6" stroke-width="4"/>
+<path d="M396 32 Q406 48 398 64 Q406 80 396 96 L470 71 L470 57 Z" fill="#ecca95" stroke="#946d3d" stroke-width="6" stroke-linejoin="round"/>
+<path d="M470 57 L496 64 L470 71 Z" fill="#3b3e45" stroke="#3b3e45" stroke-width="4" stroke-linejoin="round"/>
+<rect x="98" y="32" width="300" height="64" fill="#f6da4c"/>
+<rect x="98" y="53" width="300" height="22" fill="#fff680"/>
+<path d="M98 32H398M98 96H398" stroke="#9c891b" stroke-width="6"/>
+<path d="M98 53H398M98 75H398" stroke="#d8be21" stroke-width="4"/>
+<path d="M98 32V96" stroke="#5f6873" stroke-width="6"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="128" viewBox="0 0 384 128">
+<!-- Knolling Co. item "highlighter_pink", 3x1 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs><linearGradient id="hbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dd96c4"/><stop offset=".32" stop-color="#f8b2df"/><stop offset=".5" stop-color="#ffd1f8"/><stop offset=".68" stop-color="#f8b2df"/><stop offset="1" stop-color="#dd96c4"/></linearGradient><linearGradient id="hcap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dd96c4"/><stop offset=".32" stop-color="#dd96c4"/><stop offset=".5" stop-color="#f8b2df"/><stop offset=".68" stop-color="#dd96c4"/><stop offset="1" stop-color="#dd96c4"/></linearGradient></defs>
+<rect x="14" y="26" width="290" height="76" rx="24" fill="url(#hbody)" stroke="#9b6889" stroke-width="6" stroke-linejoin="round" />
+<rect x="70" y="46" width="150" height="36" rx="8" fill="#fbf8ef" stroke="#a7a59e" stroke-width="4" stroke-linejoin="round" />
+<rect x="84" y="56" width="74" height="16" rx="6" fill="#f8b2df" stroke="#9b6889" stroke-width="4" stroke-linejoin="round" />
+<path d="M170 64H206" stroke="#a7a59e" stroke-width="4" stroke-linecap="round"/>
+<rect x="270" y="20" width="100" height="88" rx="26" fill="url(#hcap)" stroke="#9b6889" stroke-width="6" stroke-linejoin="round" />
+<path d="M296 24V104M312 24V104" stroke="#9b6889" stroke-width="4" opacity=".45"/>
+</svg>

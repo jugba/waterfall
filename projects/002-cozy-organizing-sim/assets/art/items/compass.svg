@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<!-- Knolling Co. item "compass", 2x2 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs></defs>
+<circle cx="128" cy="128" r="104" fill="#d85a48" stroke="#721711" stroke-width="6"/>
+<circle cx="128" cy="128" r="94" fill="none" stroke="#ec7c69" stroke-width="6" opacity=".6"/>
+<circle cx="128" cy="128" r="76" fill="#fbf8ef" stroke="#721711" stroke-width="4"/>
+<path d="M128 56 V70" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(0 128 128)"/>
+<path d="M128 56 V64" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(45 128 128)"/>
+<path d="M128 56 V70" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(90 128 128)"/>
+<path d="M128 56 V64" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(135 128 128)"/>
+<path d="M128 56 V70" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(180 128 128)"/>
+<path d="M128 56 V64" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(225 128 128)"/>
+<path d="M128 56 V70" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(270 128 128)"/>
+<path d="M128 56 V64" stroke="#a7a59e" stroke-width="4" stroke-linecap="round" transform="rotate(315 128 128)"/>
+<path d="M128 66 L142 128 L114 128 Z" fill="#d85a48" stroke="#721711" stroke-width="4" stroke-linejoin="round"/>
+<path d="M128 190 L142 128 L114 128 Z" fill="#c9d0d8" stroke="#5f6873" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="128" cy="128" r="8" fill="#eef1f4" stroke="#5f6873" stroke-width="4"/>
+<rect x="112" y="14" width="32" height="20" rx="8" fill="#bc3c2e" stroke="#721711" stroke-width="4" stroke-linejoin="round" />
+</svg>

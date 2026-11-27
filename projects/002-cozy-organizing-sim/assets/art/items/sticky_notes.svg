@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<!-- Knolling Co. item "sticky_notes", 2x2 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs></defs>
+<rect x="22" y="22" width="212" height="212" rx="8" fill="#d8be21" stroke="#9c891b" stroke-width="6" stroke-linejoin="round" />
+<path d="M34 34 H222 V178 L178 222 H34 Z" fill="#f6da4c" stroke="#d8be21" stroke-width="4" stroke-linejoin="round"/>
+<path d="M222 178 L178 222 L184 184 Z" fill="#fff680" stroke="#9c891b" stroke-width="4" stroke-linejoin="round"/>
+<path d="M60 80 H180 M60 112 H160 M60 144 H128" stroke="#9c891b" stroke-width="6" stroke-linecap="round" opacity=".45"/>
+<rect x="22" y="22" width="212" height="212" rx="8" fill="none" stroke="#9c891b" stroke-width="6" stroke-linejoin="round" />
+</svg>

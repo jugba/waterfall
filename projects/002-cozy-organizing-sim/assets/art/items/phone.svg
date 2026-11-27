@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="256" viewBox="0 0 512 256">
+<!-- Knolling Co. item "phone", 4x2 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs></defs>
+<rect x="14" y="14" width="484" height="228" rx="46" fill="#2a2c33" stroke="#5c5e66" stroke-width="6" stroke-linejoin="round" />
+<rect x="22" y="22" width="468" height="212" rx="40" fill="none" stroke="#404248" stroke-width="4" stroke-linejoin="round" opacity=".8"/>
+<rect x="46" y="34" width="420" height="188" rx="26" fill="#14171d" stroke="#0c0e12" stroke-width="4" stroke-linejoin="round" />
+<path d="M150 34 L230 34 L130 222 L50 222 Z" fill="#ffffff" opacity=".07"/>
+<circle cx="32" cy="128" r="7" fill="#0c0e12" stroke="#404248" stroke-width="2"/>
+<rect x="478" y="108" width="10" height="40" rx="5" fill="#15181e" stroke="#5c5e66" stroke-width="2" stroke-linejoin="round" />
+</svg>

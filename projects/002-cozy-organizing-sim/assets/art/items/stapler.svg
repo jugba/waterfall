@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="256" viewBox="0 0 384 256">
+<!-- Knolling Co. item "stapler", 3x2 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs><linearGradient id="sbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#15181e"/><stop offset=".32" stop-color="#2a2c33"/><stop offset=".5" stop-color="#404248"/><stop offset=".68" stop-color="#2a2c33"/><stop offset="1" stop-color="#15181e"/></linearGradient></defs>
+<rect x="40" y="70" width="334" height="116" rx="34" fill="#c9d0d8" stroke="#5f6873" stroke-width="6" stroke-linejoin="round" />
+<circle cx="352" cy="128" r="10" fill="#a2abb6" stroke="#5f6873" stroke-width="4"/>
+<path d="M64 48 H262 Q330 56 330 128 Q330 200 262 208 H64 Q18 208 18 128 Q18 48 64 48 Z" fill="url(#sbody)" stroke="#5c5e66" stroke-width="6" stroke-linejoin="round"/>
+<rect x="70" y="112" width="170" height="32" rx="16" fill="#404248" stroke="#5c5e66" stroke-width="4" stroke-linejoin="round" opacity=".9"/>
+<path d="M236 92 H286 Q318 96 318 128 Q318 160 286 164 H236 Z" fill="#c9d0d8" stroke="#5f6873" stroke-width="4" stroke-linejoin="round"/>
+<path d="M256 104 V152 M272 104 V152" stroke="#a2abb6" stroke-width="4"/>
+<circle cx="54" cy="128" r="9" fill="#15181e" stroke="#5c5e66" stroke-width="4"/>
+</svg>

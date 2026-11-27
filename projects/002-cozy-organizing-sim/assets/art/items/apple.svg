@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<!-- Knolling Co. item "apple", 2x2 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs><radialGradient id="appleg" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="#abeab1"/><stop offset=".55" stop-color="#86d08f"/><stop offset="1" stop-color="#67b573"/></radialGradient></defs>
+<path d="M128 40 C 176 22 236 50 232 124 C 228 196 176 232 128 222 C 80 232 28 196 24 124 C 20 50 80 22 128 40 Z" fill="url(#appleg)" stroke="#457c4d" stroke-width="6" stroke-linejoin="round"/>
+<ellipse cx="128" cy="118" rx="22" ry="18" fill="#67b573" opacity=".8"/>
+<path d="M128 118 Q138 100 156 92 Q190 70 206 84 Q190 112 156 106 Z" fill="#67b573" stroke="#457c4d" stroke-width="4" stroke-linejoin="round"/>
+<path d="M128 118 Q124 104 118 96" stroke="#7a4019" stroke-width="9" stroke-linecap="round"/>
+</svg>

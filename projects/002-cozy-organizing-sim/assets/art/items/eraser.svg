@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="128" viewBox="0 0 256 128">
+<!-- Knolling Co. item "eraser", 2x1 cells, 128 px/cell master. Hand-coded by make_item_svgs.py (not AI). No baked drop shadow: the engine draws it. -->
+<defs></defs>
+<rect x="14" y="22" width="228" height="84" rx="22" fill="#f8b2df" stroke="#9b6889" stroke-width="6" stroke-linejoin="round" /><rect x="21" y="29" width="214" height="70" rx="15" fill="none" stroke="#dd96c4" stroke-width="8" stroke-linejoin="round" opacity=".55"/><rect x="14" y="22" width="228" height="84" rx="22" fill="none" stroke="#9b6889" stroke-width="6" stroke-linejoin="round" />
+<rect x="148" y="18" width="76" height="92" rx="6" fill="#fbf8ef" stroke="#a7a59e" stroke-width="6" stroke-linejoin="round" />
+<path d="M164 46H206M164 64H200M164 82H190" stroke="#a7a59e" stroke-width="4" stroke-linecap="round"/>
+</svg>
